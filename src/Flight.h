@@ -11,6 +11,7 @@ private:
     //maybe change the types of the fields to the actual classes of the airports and airline
 public:
     Flight();
+    Flight(string source, string target, string airline);
 };
 
 #endif
