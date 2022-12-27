@@ -22,8 +22,10 @@ class Graph {
     vector<Node> nodes;
 
 public:
-    Graph();
+    Graph() = default;
+
     Graph(int num, bool dir = false);
+
     void addEdge(int src, int dest, int weight = 1);
 };
 
