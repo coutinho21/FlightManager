@@ -1,6 +1,3 @@
-//
-// Created by Mário Branco on 26/12/2022.
-//
 
 #include "Airport.h"
 
@@ -11,5 +8,29 @@ Airport::Airport(string code, string name, string city, string country, double l
     this->country = country;
     this->latitude = latitude;
     this->longitude = longitude;
+}
+
+void Airport::setCode(const string &code) {
+    Airport::code = code;
+}
+
+void Airport::setName(const string &name) {
+    Airport::name = name;
+}
+
+void Airport::setCity(const string &city) {
+    Airport::city = city;
+}
+
+void Airport::setCountry(const string &country) {
+    Airport::country = country;
+}
+
+void Airport::setLatitude(double latitude) {
+    Airport::latitude = latitude;
+}
+
+void Airport::setLongitude(double longitude) {
+    Airport::longitude = longitude;
 }
 
