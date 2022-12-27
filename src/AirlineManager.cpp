@@ -23,6 +23,12 @@ void AirlineManager::readFiles(const string &file1, const string &file2, const s
         std::vector<std::string> temp;
         std::string tempstr;
 
+        while((std::getline(iss, tempstr, ','))){
+            if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
+                tempstr.erase(tempstr.size() - 1);
+            temp.push_back(tempstr);
+        }
+
         currentAirport.setCode(temp[0]);
         currentAirport.setName(temp[1]);
         currentAirport.setCity(temp[2]);
@@ -30,11 +36,19 @@ void AirlineManager::readFiles(const string &file1, const string &file2, const s
         currentAirport.setLatitude(stod(temp[4]));
         currentAirport.setLongitude(stod(temp[5]));
 
-        //pair<iter>
-        //airports_.insert(currentAirport)
+
+        airports_.insert(currentAirport);
 
     }
 
 
 
+}
+
+const Graph &AirlineManager::getFlights() const {
+    return flights_;
+}
+
+const AirlineManager::airportH &AirlineManager::getAirports() const {
+    return airports_;
 }

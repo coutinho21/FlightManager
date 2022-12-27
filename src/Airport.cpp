@@ -34,3 +34,27 @@ void Airport::setLongitude(double longitude) {
     Airport::longitude = longitude;
 }
 
+const string &Airport::getCode() const {
+    return code;
+}
+
+const string &Airport::getName() const {
+    return name;
+}
+
+const string &Airport::getCity() const {
+    return city;
+}
+
+const string &Airport::getCountry() const {
+    return country;
+}
+
+double Airport::getLatitude() const {
+    return latitude;
+}
+
+double Airport::getLongitude() const {
+    return longitude;
+}
+
