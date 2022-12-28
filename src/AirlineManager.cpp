@@ -1,4 +1,3 @@
-
 #include <fstream>
 #include <sstream>
 #include "AirlineManager.h"
@@ -7,7 +6,6 @@ void AirlineManager::readFiles(const string &file1, const string &file2, const s
     std::fstream in1, in2, in3;
     std::string token;
     Airport currentAirport;
-
 
     in1.open(file1); in2.open(file2); in3.open(file3);
 
@@ -36,13 +34,8 @@ void AirlineManager::readFiles(const string &file1, const string &file2, const s
         currentAirport.setLatitude(stod(temp[4]));
         currentAirport.setLongitude(stod(temp[5]));
 
-
         airports_.insert(currentAirport);
-
     }
-
-
-
 }
 
 const Graph &AirlineManager::getFlights() const {

@@ -1,4 +1,3 @@
-
 #include "Airport.h"
 
 Airport::Airport(string code, string name, string city, string country, double latitude, double longitude) {
