@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include "Graph.h"
 #include "Airport.h"
-#include "helperFunctions.cpp"
+#include "hashFunctions.cpp"
 
 class AirlineManager {
 private:

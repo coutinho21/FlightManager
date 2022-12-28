@@ -4,6 +4,7 @@
 #include "Flight.h"
 #include "AirlineManager.h"
 
+
 using namespace std;
 
 AirlineManager obj;
@@ -13,6 +14,11 @@ void test() {
 
     auto airports = obj.getAirports();
     auto it = airports.begin();
+    auto it2 = airports.begin();
+
+    //double d = calculateDistance(it2->getLatitude(),it2++->getLatitude(),it2->getLongitude(),it2++->getLongitude());
+
+    //std::cout << d << "\n";
 
     while (it != airports.end()) {
         std::cout << it->getCode() << " " << it->getName() << " " << it->getCity() << " " << it->getCountry() << " "
