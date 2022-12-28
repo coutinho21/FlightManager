@@ -9,6 +9,7 @@ class Airport {
 
 private:
     string code, name, city, country;
+    double latitude{}, longitude{};
 public:
     const string &getCode() const;
 
@@ -22,8 +23,7 @@ public:
 
     double getLongitude() const;
 
-private:
-    double latitude, longitude;
+
 public:
     Airport() = default;
     Airport(string code, string name, string city, string country, double latitude, double longitude);
