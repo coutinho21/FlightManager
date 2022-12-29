@@ -11,6 +11,7 @@ void test() {
 
     auto airports = obj.getAirports();
     auto airlines = obj.getAirlines();
+    auto flights = obj.getFlights();
     auto it = airports.begin();
     auto itAirlines = airlines.begin();
     auto it2 = airports.begin();
@@ -36,6 +37,8 @@ void test() {
         itAirlines++;
     }
     */
+
+    flights.print();
 }
 
 int main() {

@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <cmath>
 #include "FlightManager.h"
 
 void FlightManager::readFiles(const string &file1, const string &file2, const string &file3) {
@@ -8,20 +9,23 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
     Airport currentAirport;
     Airline currentAirline;
 
-    in1.open(file1); in2.open(file2); in3.open(file3);
 
-    std::getline(in1,token, '\n'); //step var names ahead
-    std::getline(in2,token,'\n');  //step var names ahead
-    std::getline(in3,token,'\n');  //step var names ahead
+    in1.open(file1);
+    in2.open(file2);
+    in3.open(file3);
+
+    std::getline(in1, token, '\n'); //step var names ahead
+    std::getline(in2, token, '\n');  //step var names ahead
+    std::getline(in3, token, '\n');  //step var names ahead
 
 
     //reads airports.csv
-    while(std::getline(in1,token,'\n')){
+    while (std::getline(in1, token, '\n')) {
         std::stringstream iss(token);
         std::vector<std::string> temp;
         std::string tempstr;
 
-        while((std::getline(iss, tempstr, ','))){
+        while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
                 tempstr.erase(tempstr.size() - 1);
             temp.push_back(tempstr);
@@ -39,12 +43,12 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
 
 
     //read airlines.csv
-    while(std::getline(in2,token,'\n')){
+    while (std::getline(in2, token, '\n')) {
         std::stringstream iss(token);
         std::vector<std::string> temp;
         std::string tempstr;
 
-        while((std::getline(iss, tempstr, ','))){
+        while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
                 tempstr.erase(tempstr.size() - 1);
             temp.push_back(tempstr);
@@ -57,36 +61,53 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
 
         airlines.insert(currentAirline);
     }
-}
 
-double FlightManager::calculateDistance(const Airport& a1, const Airport& a2) {
-    double lat1 = a1.getLatitude();
-    double lat2 = a2.getLatitude();
-    double lon1 = a1.getLongitude();
-    double lon2 = a2.getLongitude();
-    int earthRadius = 6371000; // metres
-    double latitudeSource = lat1 *  M_PI/180;
-    double latitudeDestination = lat2 * M_PI/180;
-    double latitudeDiff = (lat2 - lat1) * M_PI/180;
-    double longitudeDiff = (lon2-lon1) * M_PI/180;
+    while (std::getline(in3, token, '\n')) {
+        std::stringstream iss(token);
+        std::vector<std::string> temp;
+        std::string tempstr;
 
-    double a = sin(latitudeDiff/2) * sin(latitudeDiff/2) +
-               cos(latitudeSource) * cos(latitudeDestination) *
-               sin(longitudeDiff/2) * sin(longitudeDiff/2);
+        while ((std::getline(iss, tempstr, ','))) {
+            if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
+                tempstr.erase(tempstr.size() - 1);
+            temp.push_back(tempstr);
+        }
 
-    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+        flights.addEdge(temp[0], temp[1], temp[2]);
 
-    return earthRadius * c / 1000; // in km
-}
+
+    }
+    }
+
+    double FlightManager::calculateDistance(const Airport &a1, const Airport &a2) {
+        double lat1 = a1.getLatitude();
+        double lat2 = a2.getLatitude();
+        double lon1 = a1.getLongitude();
+        double lon2 = a2.getLongitude();
+        int earthRadius = 6371000; // metres
+        double latitudeSource = lat1 * M_PI / 180;
+        double latitudeDestination = lat2 * M_PI / 180;
+        double latitudeDiff = (lat2 - lat1) * M_PI / 180;
+        double longitudeDiff = (lon2 - lon1) * M_PI / 180;
+
+        double a = sin(latitudeDiff / 2) * sin(latitudeDiff / 2) +
+                   cos(latitudeSource) * cos(latitudeDestination) *
+                   sin(longitudeDiff / 2) * sin(longitudeDiff / 2);
+
+        double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+        return earthRadius * c / 1000; // in km
+    }
+
+
+    const FlightManager::airportH &FlightManager::getAirports() const {
+        return this->airports;
+    }
+
+    const set<Airline> &FlightManager::getAirlines() const {
+        return this->airlines;
+    }
 
 const Graph &FlightManager::getFlights() const {
-    return this->flights;
-}
-
-const FlightManager::airportH &FlightManager::getAirports() const {
-    return this->airports;
-}
-
-const set<Airline> &FlightManager::getAirlines() const {
-    return this->airlines;
+    return flights;
 }

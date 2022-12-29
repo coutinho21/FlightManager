@@ -11,6 +11,10 @@ private:
     string code, name, city, country;
     double latitude{}, longitude{};
 public:
+
+    Airport() = default;
+    Airport(string code, string name, string city, string country, double latitude, double longitude);
+
     const string &getCode() const;
 
     const string &getName() const;
@@ -23,10 +27,6 @@ public:
 
     double getLongitude() const;
 
-
-public:
-    Airport() = default;
-    Airport(string code, string name, string city, string country, double latitude, double longitude);
 
     void setCode(const string &code);
 
