@@ -12,4 +12,4 @@ add_executable(FlightManager
         src/Flight.h
         src/Graph.cpp
         src/Graph.h
-        src/main.cpp src/AirlineManager.h src/AirlineManager.cpp src/helperFunctions.cpp src/hashFunctions.cpp)
+        src/main.cpp src/FlightManager.h src/FlightManager.cpp src/hashFunctions.cpp)
