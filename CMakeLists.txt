@@ -8,8 +8,6 @@ add_executable(FlightManager
         src/Airline.h
         src/Airport.cpp
         src/Airport.h
-        src/Flight.cpp
-        src/Flight.h
         src/Graph.cpp
         src/Graph.h
         src/main.cpp src/FlightManager.h src/FlightManager.cpp src/hashFunctions.cpp)
