@@ -92,7 +92,7 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
             }
         }
 
-        flights.addEdge(airport1, airport1, airline1);
+        flights.addEdge(airport1, airport2, airline1);
     }
 }
 

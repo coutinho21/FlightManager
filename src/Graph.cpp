@@ -6,7 +6,7 @@ void Graph::addEdge(const Airport& src, const Airport& dest, const Airline& airl
     int srcI = -1;
     int i = 0;
 
-    double weight = calculateDistance(src,dest);
+    double w = calculateDistance(src,dest);
 
     while(i < nodes.size()){
         if(nodes[i].src == src.getCode()){
@@ -19,11 +19,15 @@ void Graph::addEdge(const Airport& src, const Airport& dest, const Airline& airl
     if(srcI == -1 ) {
         Node newNode;
         newNode.src = src.getCode();
-        newNode.adj.push_back({dest.getCode(), weight, airline});
+        Edge toAdd;
+        toAdd.dest = dest.getCode();
+        toAdd.weight = w;
+        toAdd.airline = airline;
+        newNode.adj.push_back(toAdd);
         nodes.push_back(newNode);
     }
     else {
-        nodes[srcI].adj.push_back({dest.getCode(), weight, airline});
+        nodes[srcI].adj.push_back({dest.getCode(),w, airline});
     }
 }
 
@@ -31,9 +35,9 @@ void Graph::print() {
     cout << "Nodes:" << endl;
     cout << "src: ";
     for(const Node& node: nodes){
-        cout << node.src << " -> ";
+        cout << node.src << ">";
         for(const Edge& edge: node.adj){
-            cout << edge.dest << " -> ";
+            cout << edge.dest << "," <<  edge.airline.getCode()<< "," << edge.weight << ">";
         }
         cout << "\nsrc: ";
     }
