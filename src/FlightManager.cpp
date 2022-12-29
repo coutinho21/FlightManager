@@ -76,7 +76,7 @@ double FlightManager::calculateDistance(const Airport& a1, const Airport& a2) {
 
     double c = 2 * atan2(sqrt(a), sqrt(1-a));
 
-    return earthRadius * c; // in metres
+    return earthRadius * c / 1000; // in km
 }
 
 const Graph &FlightManager::getFlights() const {
