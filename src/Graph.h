@@ -5,28 +5,32 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <set>
 
 using namespace std;
 
 class Graph {
     struct Edge {
-        int dest, weight;
+        string dest;
+        double weight;
+        string airline;
     };
 
     struct Node {
+        string src;
         list<Edge> adj;
     };
 
-    int n;                  // size of graph
-    bool hasDir;            // has direction?
+    int n{};                  // size of graph
     vector<Node> nodes;
 
 public:
-    Graph() = default;
+    Graph();
 
-    Graph(int num, bool dir = false);
 
-    void addEdge(int src, int dest, int weight = 1);
+    void addEdge(string src, string dest, string airline);
+
+    void print();
 };
 
 
