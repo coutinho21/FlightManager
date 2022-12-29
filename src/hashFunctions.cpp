@@ -1,6 +1,5 @@
 #include "Airport.h"
 
-
 struct eAF {
     bool operator() (const Airport& a1, const Airport& a2) const {
         return a1.getCode() == a2.getCode();
