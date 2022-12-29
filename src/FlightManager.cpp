@@ -62,10 +62,13 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
         airlines.insert(currentAirline);
     }
 
+    //reads flights.csv
     while (std::getline(in3, token, '\n')) {
         std::stringstream iss(token);
         std::vector<std::string> temp;
         std::string tempstr;
+        Airport airport1, airport2;
+        Airline airline1;
 
         while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
@@ -73,40 +76,33 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
             temp.push_back(tempstr);
         }
 
-        flights.addEdge(temp[0], temp[1], temp[2]);
+        // change if there is a more efficient way to find the data
+        for(const Airport& airport : airports){
+            if(airport.getCode() == temp[0])
+                airport1 = airport;
+            else if (airport.getCode() == temp[1])
+                airport2 = airport;
 
+        }
 
+        for(const Airline& airline : airlines){
+            if(airline.getCode() == temp[2]) {
+                airline1 = airline;
+                break;
+            }
+        }
+
+        flights.addEdge(airport1, airport1, airline1);
     }
-    }
+}
 
-    double FlightManager::calculateDistance(const Airport &a1, const Airport &a2) {
-        double lat1 = a1.getLatitude();
-        double lat2 = a2.getLatitude();
-        double lon1 = a1.getLongitude();
-        double lon2 = a2.getLongitude();
-        int earthRadius = 6371000; // metres
-        double latitudeSource = lat1 * M_PI / 180;
-        double latitudeDestination = lat2 * M_PI / 180;
-        double latitudeDiff = (lat2 - lat1) * M_PI / 180;
-        double longitudeDiff = (lon2 - lon1) * M_PI / 180;
+const FlightManager::airportH &FlightManager::getAirports() const {
+    return this->airports;
+}
 
-        double a = sin(latitudeDiff / 2) * sin(latitudeDiff / 2) +
-                   cos(latitudeSource) * cos(latitudeDestination) *
-                   sin(longitudeDiff / 2) * sin(longitudeDiff / 2);
-
-        double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-
-        return earthRadius * c / 1000; // in km
-    }
-
-
-    const FlightManager::airportH &FlightManager::getAirports() const {
-        return this->airports;
-    }
-
-    const set<Airline> &FlightManager::getAirlines() const {
-        return this->airlines;
-    }
+const set<Airline> &FlightManager::getAirlines() const {
+    return this->airlines;
+}
 
 const Graph &FlightManager::getFlights() const {
     return flights;

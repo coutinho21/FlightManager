@@ -18,7 +18,7 @@ void test() {
     auto it3 = airports.begin(); it3++;
 
     cout << it2->getName() << " (" << it2->getCode() << ") to " << it3->getName() << " (" << it3->getCode() << ')' << endl;
-    double d = FlightManager::calculateDistance(*it2, *it3);
+    double d = Graph::calculateDistance(*it2, *it3);
     cout << d << " kilometers" << endl;
 
 
