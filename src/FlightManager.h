@@ -21,8 +21,6 @@ public:
     const set<Airline> &getAirlines() const;
     FlightManager() = default;
     void readFiles(const std::string& file1, const std::string& file2, const std::string& file3);
-    static double calculateDistance(const Airport& a1, const Airport& a2);
-
 };
 
 

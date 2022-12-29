@@ -1,15 +1,15 @@
 #include "Graph.h"
 
-
 Graph::Graph() = default;
 
-void Graph::addEdge(string src, string dest, string airline) {
+void Graph::addEdge(const Airport& src, const Airport& dest, const Airline& airline) {
     int srcI = -1;
     int i = 0;
-    //double weight = FlightManager::calculateDistance(src,dest);
 
-    while(i<nodes.size()){
-        if(nodes[i].src == src){
+    double w = calculateDistance(src,dest);
+
+    while(i < nodes.size()){
+        if(nodes[i].src == src.getCode()){
             srcI = i;
             break;
         }
@@ -18,25 +18,47 @@ void Graph::addEdge(string src, string dest, string airline) {
 
     if(srcI == -1 ) {
         Node newNode;
-        newNode.src = src;
-        newNode.adj.push_back({dest, 1, airline});
+        newNode.src = src.getCode();
+        Edge toAdd;
+        toAdd.dest = dest.getCode();
+        toAdd.weight = w;
+        toAdd.airline = airline;
+        newNode.adj.push_back(toAdd);
         nodes.push_back(newNode);
     }
     else {
-        nodes[srcI].adj.push_back({dest, 1, airline});
+        nodes[srcI].adj.push_back({dest.getCode(),w, airline});
     }
-
-
 }
 
 void Graph::print() {
-    std::cout << "Nodes: \n";
-    std::cout << "src: ";
-    for(Node node: nodes){
-        std::cout << node.src << " ->";
-        for(Edge edge: node.adj){
-            std::cout << edge.dest << "->";
+    cout << "Nodes:" << endl;
+    cout << "src: ";
+    for(const Node& node: nodes){
+        cout << node.src << ">";
+        for(const Edge& edge: node.adj){
+            cout << edge.dest << "," <<  edge.airline.getCode()<< "," << edge.weight << ">";
         }
-        std::cout << "\nsrc: ";
+        cout << "\nsrc: ";
     }
+}
+
+double Graph::calculateDistance(const Airport &a1, const Airport &a2) {
+    double lat1 = a1.getLatitude();
+    double lat2 = a2.getLatitude();
+    double lon1 = a1.getLongitude();
+    double lon2 = a2.getLongitude();
+    int earthRadius = 6371000; // metres
+    double latitudeSource = lat1 * M_PI / 180;
+    double latitudeDestination = lat2 * M_PI / 180;
+    double latitudeDiff = (lat2 - lat1) * M_PI / 180;
+    double longitudeDiff = (lon2 - lon1) * M_PI / 180;
+
+    double a = sin(latitudeDiff / 2) * sin(latitudeDiff / 2) +
+               cos(latitudeSource) * cos(latitudeDestination) *
+               sin(longitudeDiff / 2) * sin(longitudeDiff / 2);
+
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    return earthRadius * c / 1000; // in km
 }
