@@ -51,9 +51,14 @@ void test() {
     flights.print();
 }
 
+void bestTravel(const string& origin, const string& destination){
+
+}
+
 int main() {
     obj.readFiles( "airports.csv","airlines.csv", "flights.csv");
     short entry = 0;
+    string src, dest;
     test();
 
     while(entry != -1){
@@ -61,6 +66,9 @@ int main() {
 
         switch (entry) {
             case 1:
+                cout << "Flight from: "; cin >> src;
+                cout << "Flight to: "; cin >> dest;
+                bestTravel(src, dest);
                 break;
             case 2:
                 break;
