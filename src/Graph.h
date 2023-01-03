@@ -16,20 +16,21 @@ class Graph {
     struct Edge {
         string dest;
         double weight;
-        Airline airline;
+        string airline;
     };
 
     struct Node {
         string src;
-        list<Edge> adj;
+        list<Edge> edges;
     };
 
-    int n{};                  // size of graph
+    int n;                  // size of graph
+    bool hasDir;
     vector<Node> nodes;
 
 public:
     Graph();
-    void addEdge(const Airport& src, const Airport& dest, const Airline& airline);
+    void addEdge(const string& src, const string& dest, const string& airline);
     void print();
     static double calculateDistance(const Airport& a1, const Airport& a2);
 };

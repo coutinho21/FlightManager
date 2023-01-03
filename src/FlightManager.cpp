@@ -62,13 +62,12 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
         airlines.insert(currentAirline);
     }
 
+
     //reads flights.csv
     while (std::getline(in3, token, '\n')) {
         std::stringstream iss(token);
         std::vector<std::string> temp;
         std::string tempstr;
-        Airport airport1, airport2;
-        Airline airline1;
 
         while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
@@ -76,23 +75,7 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
             temp.push_back(tempstr);
         }
 
-        // change if there is a more efficient way to find the data
-        for(const Airport& airport : airports){
-            if(airport.getCode() == temp[0])
-                airport1 = airport;
-            else if (airport.getCode() == temp[1])
-                airport2 = airport;
-
-        }
-
-        for(const Airline& airline : airlines){
-            if(airline.getCode() == temp[2]) {
-                airline1 = airline;
-                break;
-            }
-        }
-
-        flights.addEdge(airport1, airport2, airline1);
+        flights.addEdge(temp[0], temp[1], temp[2]);
     }
 }
 
