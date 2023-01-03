@@ -24,12 +24,11 @@ class Graph {
         list<Edge> edges;
     };
 
-    int n;                  // size of graph
-    bool hasDir;
+    int n{};               // size of graph
+    bool hasDir{true};
     vector<Node> nodes;
 
 public:
-    Graph();
     void addEdge(const string& src, const string& dest, const string& airline);
     void print();
     static double calculateDistance(const Airport& a1, const Airport& a2);

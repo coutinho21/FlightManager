@@ -1,10 +1,5 @@
 #include "Graph.h"
 
-Graph::Graph() {
-    this->n = 0;
-    this->hasDir = true;
-}
-
 void Graph::addEdge(const string& src, const string& dest, const string& airline) {
     int srcI = -1;
     int i = 0;

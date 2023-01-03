@@ -11,7 +11,7 @@
 class FlightManager {
 private:
     typedef unordered_set<Airport,hAF,eAF> airportH;
-    Graph flights = Graph();
+    Graph flights;
     airportH airports;
     set<Airline> airlines;
 
