@@ -6,6 +6,16 @@ using namespace std;
 
 FlightManager obj;
 
+void showMenu(){
+    cout << "\n";
+    cout << "---------------------- Menu ----------------------" << endl;
+    cout << "| 1- Best flight possible                        |" << endl;
+    cout << "| 2- Airport info                                |" << endl;
+    cout << "| 3- Book a flight                               |" << endl;
+    cout << "| 0- Quit                                        |" << endl;
+    cout << "--------------------------------------------------" << endl;
+}
+
 void test() {
     typedef unordered_set<Airport, hAF, eAF>::iterator iteratorH;
 
@@ -41,10 +51,37 @@ void test() {
     flights.print();
 }
 
+void bestTravel(const string& origin, const string& destination){
+
+}
+
 int main() {
     obj.readFiles( "airports.csv","airlines.csv", "flights.csv");
-
+    short entry = 0;
+    string src, dest;
     test();
+
+    while(entry != -1){
+        showMenu(); cin >> entry;
+
+        switch (entry) {
+            case 1:
+                cout << "Flight from: "; cin >> src;
+                cout << "Flight to: "; cin >> dest;
+                bestTravel(src, dest);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 0:
+                entry = -1;
+                break;
+            default:
+                cout << "\nChoose a valid option." << endl;
+                break;
+        }
+    }
 
     return 0;
 }

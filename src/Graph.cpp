@@ -1,43 +1,37 @@
 #include "Graph.h"
 
-Graph::Graph() = default;
-
-void Graph::addEdge(const Airport& src, const Airport& dest, const Airline& airline) {
+void Graph::addEdge(const string& origin, const string& destination, const string& airline) {
     int srcI = -1;
     int i = 0;
+    n++;
 
-    double w = calculateDistance(src,dest);
+    //double weight = FlightManager::calculateDistance(src,dest);
 
     while(i < nodes.size()){
-        if(nodes[i].src == src.getCode()){
+        if(nodes[i].origin == origin){
             srcI = i;
             break;
         }
         i++;
     }
 
-    if(srcI == -1 ) {
+    if(srcI == -1) {
         Node newNode;
-        newNode.src = src.getCode();
-        Edge toAdd;
-        toAdd.dest = dest.getCode();
-        toAdd.weight = w;
-        toAdd.airline = airline;
-        newNode.adj.push_back(toAdd);
+        newNode.origin = origin;
+        newNode.flights.push_back({destination, 1, airline});
         nodes.push_back(newNode);
     }
-    else {
-        nodes[srcI].adj.push_back({dest.getCode(),w, airline});
-    }
+    else
+        nodes[srcI].flights.push_back({destination, 1, airline});
 }
 
 void Graph::print() {
     cout << "Nodes:" << endl;
     cout << "src: ";
     for(const Node& node: nodes){
-        cout << node.src << ">";
-        for(const Edge& edge: node.adj){
-            cout << edge.dest << "," <<  edge.airline.getCode()<< "," << edge.weight << ">";
+        cout << node.origin << ">";
+        for(const Flight& edge: node.flights){
+            cout << edge.destination << "," <<  edge.airline << "," << edge.distance << ">";
         }
         cout << "\nsrc: ";
     }

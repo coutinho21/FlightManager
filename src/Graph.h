@@ -13,23 +13,23 @@
 using namespace std;
 
 class Graph {
-    struct Edge {
-        string dest;
-        double weight;
-        Airline airline;
+    struct Flight {
+        string destination;
+        double distance;
+        string airline;
     };
 
-    struct Node {
-        string src;
-        list<Edge> adj;
+    struct Node { //airport
+        string origin;
+        vector<Flight> flights;
     };
 
-    int n{};                  // size of graph
+    int n{};                     // size of graph
+    bool hasDir{true};
     vector<Node> nodes;
 
 public:
-    Graph();
-    void addEdge(const Airport& src, const Airport& dest, const Airline& airline);
+    void addEdge(const string& origin, const string& destination, const string& airline);
     void print();
     static double calculateDistance(const Airport& a1, const Airport& a2);
 };
