@@ -51,15 +51,27 @@ void test() {
     flights.print();
 }
 
-void bestTravel(const string& origin, const string& destination){
+void bestTravel(const string& origin, const string& destination) {
+    auto airports = obj.getAirports();
+    auto flights = obj.getFlights();
+    auto it = airports.begin();
+    Airport from, to;
+    while (it != airports.end()) {
+        if (it->getCode() == origin)
+            from = *it;
+        else if (it->getCode() == destination)
+            to = *it;
+        it++;
+    }
+    cout << "Flight from " << from.getCode() << " - " << from.getName() << " to " << to.getCode() << " - " << to.getName() << endl;
 
+    flights.bestTravel(from, to);
 }
 
 int main() {
     obj.readFiles( "airports.csv","airlines.csv", "flights.csv");
     short entry = 0;
     string src, dest;
-    test();
 
     while(entry != -1){
         showMenu(); cin >> entry;
