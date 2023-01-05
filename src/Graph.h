@@ -7,32 +7,25 @@
 #include <cmath>
 #include <vector>
 #include <set>
+#include <unordered_map>
 #include "Airline.h"
 #include "Airport.h"
 
 using namespace std;
 
 class Graph {
-    struct Flight {
-        int destination{};
-        double distance{};
-        string airline;
-    };
 
-    struct Node { //airport
-        list<Flight> flights;
-        bool visited;
-    };
-
-    int n{};                     // size of graph
-    vector<Node> nodes;
-
+    int n{};       // size of graph
+    unordered_map<string,Airport*> airports;
+    unordered_map<string,Airline*> airlines;
 public:
-    void addFlight(int origin, int destination, string  airline);
-    void print();
-    static double calculateDistance(const Airport& a1, const Airport& a2);
-    void bestTravel(const Airport& origin, const Airport& destination);
-    };
+    void readFiles(const std::string& file1, const std::string& file2, const std::string& file3);
+    static double calculateDistance(Airport* a1, Airport* a2);
+    void bestTravel(Airport* origin, Airport* destination);
+    unordered_map<string,Airport*> getAirports();
+    unordered_map<string,Airline*> getAirlines();
+};
+
 
 
 #endif
