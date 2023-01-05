@@ -9,3 +9,6 @@ Testing/
 .ninja_log
 *.txt
 FlightManager
+*.cbp
+*.exe
+Makefile

@@ -1,13 +1,15 @@
 #include "Airport.h"
 
-Airport::Airport(string code, string name, string city, string country, double latitude, double longitude) {
+Airport::Airport(string code, string name, string city, string country, double latitude, double longitude, bool visited) {
     this->code = code;
     this->name = name;
     this->city = city;
     this->country = country;
     this->latitude = latitude;
     this->longitude = longitude;
+    this->visited = visited;
 }
+
 
 void Airport::setCode(const string &code) {
     Airport::code = code;
@@ -57,20 +59,10 @@ double Airport::getLongitude() const {
     return longitude;
 }
 
+void Airport::addFlight(Airport* destination, Airline* airline) {
+    flights.emplace_back(destination,airline);
+}
 
-struct eAF {
-    bool operator() (const Airport& a1, const Airport& a2) const {
-        return a1.getCode() == a2.getCode();
-    }
-};
-
-struct hAF {
-    int operator() (const Airport& a) const {
-        string s1 = a.getCode();
-        int v = 0;
-        for (char i : s1)
-            v = 37*v + i;
-        return v;
-    }
-};
-
+vector<Flight> Airport::getFlights() const {
+    return flights;
+}
