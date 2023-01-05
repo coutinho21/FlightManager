@@ -22,17 +22,18 @@ class Graph {
     struct Node { //airport
         string origin;
         vector<Flight> flights;
+        bool visited;
     };
 
     int n{};                     // size of graph
-    bool hasDir{true};
     vector<Node> nodes;
 
 public:
     void addEdge(const string& origin, const string& destination, const string& airline);
     void print();
     static double calculateDistance(const Airport& a1, const Airport& a2);
-};
+    void bestTravel(const Airport& origin, const Airport& destination);
+    };
 
 
 #endif
