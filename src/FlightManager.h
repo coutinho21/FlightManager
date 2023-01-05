@@ -10,7 +10,7 @@
 
 class FlightManager {
 private:
-    unordered_map<int,Airport>airports;
+    unordered_map<int,Airport> airports;
     Graph flights;
     set<Airline> airlines;
 

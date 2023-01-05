@@ -16,7 +16,7 @@ class Graph {
     struct Flight {
         int destination{};
         double distance{};
-        Airline airline;
+        string airline;
     };
 
     struct Node { //airport
@@ -28,7 +28,7 @@ class Graph {
     vector<Node> nodes;
 
 public:
-    void addFlight(int origin, int destination, const Airline& airline);
+    void addFlight(int origin, int destination, string  airline);
     void print();
     static double calculateDistance(const Airport& a1, const Airport& a2);
     void bestTravel(const Airport& origin, const Airport& destination);

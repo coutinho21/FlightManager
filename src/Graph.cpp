@@ -1,13 +1,19 @@
 #include <queue>
 #include "Graph.h"
 
-void Graph::addFlight(int origin, int destination, const Airline& airline) {
+void Graph::addFlight(int origin, int destination, string airline) {
 
     n++;
     double distance = 1;
+    Flight test;
+    test.destination=destination;
+    test.distance=1;
+    test.airline = airline;
+
+    nodes[1].flights.push_back(test);
     //double distance = FlightManager::calculateDistance(src,dest);
 
-    nodes[origin].flights.push_back({destination,distance,airline});
+    //nodes[origin].flights.push_back({destination,distance,airline});
 
 }
 
@@ -16,7 +22,7 @@ void Graph::print() {
     for(int i = 0; i< nodes.size();i++){
         cout << "src: "<< i;
         for(const Flight& edge: nodes[i].flights){
-            cout << " " <<edge.destination << "," <<  edge.airline.getCode() << "," << edge.distance << ">";
+            cout << " " <<edge.destination << ",";// <<  edge.airline.getCode() << "," << edge.distance << ">";
         }
 
     }

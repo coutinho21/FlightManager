@@ -100,8 +100,7 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
         }
 
 
-
-        flights.addFlight(origin, destination, airline1);
+        //flights.addFlight(origin, destination, "a");
     }
 }
 
