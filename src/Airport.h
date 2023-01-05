@@ -2,18 +2,23 @@
 #define AIRPORT_H
 
 #include <string>
+#include <vector>
+#include "Flight.h"
+#include "Airline.h"
 
 using namespace std;
 
-class Airport {
+class Flight;
 
-private:
+class Airport {
     string code, name, city, country;
-    double latitude{}, longitude{};
+    double latitude{}, longitude{}, distance{};
+    bool visited;
+    vector<Flight> flights;
 public:
 
     Airport() = default;
-    Airport(string code, string name, string city, string country, double latitude, double longitude);
+    Airport(string code, string name, string city, string country, double latitude, double longitude, bool visited);
 
     const string &getCode() const;
 
@@ -27,6 +32,7 @@ public:
 
     double getLongitude() const;
 
+    vector<Flight> getFlights() const;
 
     void setCode(const string &code);
 
@@ -39,6 +45,9 @@ public:
     void setLatitude(double latitude);
 
     void setLongitude(double longitude);
+
+    void addFlight(Airport* destination, Airline* airline);
+
 };
 
 #endif

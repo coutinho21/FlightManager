@@ -1,47 +1,108 @@
 #include "Graph.h"
+#include <queue>
+#include <fstream>
+#include <sstream>
 
-void Graph::addEdge(const string& origin, const string& destination, const string& airline) {
-    int srcI = -1;
-    int i = 0;
-    n++;
+void Graph::readFiles(const string &file1, const string &file2, const string &file3) {
+    std::fstream in1, in2, in3;
+    std::string token;
+    Airport *currentAirport;
+    Airline *currentAirline;
 
-    //double weight = FlightManager::calculateDistance(src,dest);
 
-    while(i < nodes.size()){
-        if(nodes[i].origin == origin){
-            srcI = i;
-            break;
+    in1.open(file1);
+    in2.open(file2);
+    in3.open(file3);
+
+    std::getline(in1, token, '\n'); //step var names ahead
+    std::getline(in2, token, '\n');  //step var names ahead
+    std::getline(in3, token, '\n');  //step var names ahead
+
+
+    //reads airports.csv
+    while (std::getline(in1, token, '\n')) {
+        std::stringstream iss(token);
+        std::vector<std::string> temp;
+        std::string tempstr;
+        currentAirport = new Airport();
+
+
+        while ((std::getline(iss, tempstr, ','))) {
+            if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
+                tempstr.erase(tempstr.size() - 1);
+            temp.push_back(tempstr);
         }
-        i++;
+
+        currentAirport->setCode(temp[0]);
+        currentAirport->setName(temp[1]);
+        currentAirport->setCity(temp[2]);
+        currentAirport->setCountry(temp[3]);
+        currentAirport->setLatitude(stod(temp[4]));
+        currentAirport->setLongitude(stod(temp[5]));
+
+        airports[currentAirport->getCode()] = currentAirport;
+        n++;
     }
 
-    if(srcI == -1) {
-        Node newNode;
-        newNode.origin = origin;
-        newNode.flights.push_back({destination, 1, airline});
-        nodes.push_back(newNode);
+
+    //read airlines.csv
+    while (std::getline(in2, token, '\n')) {
+        std::stringstream iss(token);
+        std::vector<std::string> temp;
+        std::string tempstr;
+        currentAirline = new Airline();
+
+        while ((std::getline(iss, tempstr, ','))) {
+            if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
+                tempstr.erase(tempstr.size() - 1);
+            temp.push_back(tempstr);
+        }
+
+        currentAirline->setCode(temp[0]);
+        currentAirline->setName(temp[1]);
+        currentAirline->setCallSign(temp[2]);
+        currentAirline->setCountry(temp[3]);
+
+        airlines[currentAirline->getCode()] = currentAirline;
     }
-    else
-        nodes[srcI].flights.push_back({destination, 1, airline});
+
+
+    //reads flights.csv
+    while (std::getline(in3, token, '\n')) {
+        std::stringstream iss(token);
+        std::vector<std::string> temp;
+        std::string tempstr;
+        Airport *origin, *destination;
+        Airline *airline;
+
+        while ((std::getline(iss, tempstr, ','))) {
+            if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
+                tempstr.erase(tempstr.size() - 1);
+            temp.push_back(tempstr);
+        }
+
+        origin = airports[temp[0]];
+        destination = airports[temp[1]];
+        airline = airlines[temp[2]];
+        origin->addFlight(destination, airline);
+    }
+
 }
 
-void Graph::print() {
-    cout << "Nodes:" << endl;
-    cout << "src: ";
-    for(const Node& node: nodes){
-        cout << node.origin << ">";
-        for(const Flight& edge: node.flights){
-            cout << edge.destination << "," <<  edge.airline << "," << edge.distance << ">";
-        }
-        cout << "\nsrc: ";
-    }
+unordered_map<string, Airport *> Graph::getAirports() {
+    return airports;
 }
 
-double Graph::calculateDistance(const Airport &a1, const Airport &a2) {
-    double lat1 = a1.getLatitude();
-    double lat2 = a2.getLatitude();
-    double lon1 = a1.getLongitude();
-    double lon2 = a2.getLongitude();
+unordered_map<string, Airline *> Graph::getAirlines() {
+    return airlines;
+}
+
+
+double Graph::calculateDistance(Airport *a1, Airport *a2) {
+    double lat1 = a1->getLatitude();
+    double lat2 = a2->getLatitude();
+    double lon1 = a1->getLongitude();
+    double lon2 = a2->getLongitude();
     int earthRadius = 6371000; // metres
     double latitudeSource = lat1 * M_PI / 180;
     double latitudeDestination = lat2 * M_PI / 180;
@@ -56,3 +117,26 @@ double Graph::calculateDistance(const Airport &a1, const Airport &a2) {
 
     return earthRadius * c / 1000; // in km
 }
+
+/*
+void Graph::bestTravel(const Airport &origin, const Airport &destination) {
+
+    for (int i = 1; i <= nodes.size() - 1; i++) nodes[i].visited = false;
+    queue<Airport> q; // queue of unvisited nodes
+    q.push(origin);
+    nodes[].visited = true;
+    while (!q.empty()) { // while there are still unvisited nodes
+        int u = q.front();
+        q.pop();
+// show node order
+//cout << u << " ";
+        for (auto e: nodes[u].adj) {
+            int w = e.dest;
+            if (!nodes[w].visited) {
+                q.push(w);
+                nodes[w].visited = true;
+            }
+        }
+    }
+}
+ */

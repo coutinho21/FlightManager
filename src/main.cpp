@@ -1,10 +1,10 @@
 #include <iostream>
-#include "Airport.h"
-#include "FlightManager.h"
+#include "Graph.h"
+#include "Airline.h"
 
 using namespace std;
 
-FlightManager obj;
+Graph flightManager;
 
 void showMenu(){
     cout << "\n";
@@ -17,50 +17,55 @@ void showMenu(){
 }
 
 void test() {
-    typedef unordered_set<Airport, hAF, eAF>::iterator iteratorH;
 
-    auto airports = obj.getAirports();
-    auto airlines = obj.getAirlines();
-    auto flights = obj.getFlights();
+    auto airports = flightManager.getAirports();
+    auto airlines = flightManager.getAirlines();
     auto it = airports.begin();
     auto itAirlines = airlines.begin();
     auto it2 = airports.begin();
-    auto it3 = airports.begin(); it3++;
+    auto it3 = airports.begin();
+    it3++;
 
-    cout << it2->getName() << " (" << it2->getCode() << ") to " << it3->getName() << " (" << it3->getCode() << ')' << endl;
-    double d = Graph::calculateDistance(*it2, *it3);
+    cout << it2->second->getName() << " (" << it2->second->getCode() << ") to " << it3->second->getName() << " ("
+         << it3->second->getCode() << ')' << endl;
+    double d = Graph::calculateDistance(it2->second, it3->second);
     cout << d << " kilometers" << endl;
 
-
-    /**
     while (it != airports.end()) {
-        cout << it->getCode() << " " << it->getName() << " " << it->getCity() << " " << it->getCountry() << " "
-                  << it->getLatitude() << " " << it->getLongitude() << endl;
+        for(Flight flight : it->second->getFlights()) {
+            cout << "Flight from " << it->second->getCode() << " - " << it->second->getName() << " to "
+                 << flight.getDestination()->getCode() << " - " << flight.getDestination()->getName()
+                 << " with airline " << flight.getAirline()->getCode() << " - " << flight.getAirline()->getName() << endl;
+        }
         it++;
     }
-    */
 
-    /**
+/*
+    while (it != airports.end()) {
+        cout << it->second->getCode() << " " << it->second->getName() << " " << it->second->getCity() << " "
+             << it->second->getCountry() << " "
+             << it->second->getLatitude() << " " << it->second->getLongitude() << endl;
+        it++;
+    }
+*/
+/*
     while (itAirlines != airlines.end()) {
-        cout << itAirlines->getCode() << " " << itAirlines->getName() << " " << itAirlines->getCallSign()
-        << " " << itAirlines->getCountry() << endl;
+        cout << itAirlines->second->getCode() << " " << itAirlines->second->getName() << " "
+             << itAirlines->second->getCallSign()
+             << " " << itAirlines->second->getCountry() << endl;
         itAirlines++;
     }
-    */
-
-    flights.print();
-}
-
-void bestTravel(const string& origin, const string& destination){
+*/
 
 
 }
+
 
 int main() {
-    obj.readFiles( "airports.csv","airlines.csv", "flights.csv");
+    flightManager.readFiles( "airports.csv","airlines.csv", "flights.csv");
+    test();
     short entry = 0;
     string src, dest;
-    test();
 
     while(entry != -1){
         showMenu(); cin >> entry;
@@ -69,7 +74,7 @@ int main() {
             case 1:
                 cout << "Flight from: "; cin >> src;
                 cout << "Flight to: "; cin >> dest;
-                bestTravel(src, dest);
+                //bestTravel(src, dest);
                 break;
             case 2:
                 break;
