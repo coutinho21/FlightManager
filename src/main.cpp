@@ -17,7 +17,6 @@ void showMenu(){
 }
 
 void test() {
-    typedef unordered_set<Airport, hAF, eAF>::iterator iteratorH;
 
     auto airports = obj.getAirports();
     auto airlines = obj.getAirlines();
@@ -27,18 +26,17 @@ void test() {
     auto it2 = airports.begin();
     auto it3 = airports.begin(); it3++;
 
-    cout << it2->getName() << " (" << it2->getCode() << ") to " << it3->getName() << " (" << it3->getCode() << ')' << endl;
-    double d = Graph::calculateDistance(*it2, *it3);
+    cout << it2->second.getName() << " (" << it2->second.getCode() << ") to " << it3->second.getName() << " (" << it3->second.getCode() << ')' << endl;
+    double d = Graph::calculateDistance(it2->second, it3->second);
     cout << d << " kilometers" << endl;
 
 
-    /**
     while (it != airports.end()) {
-        cout << it->getCode() << " " << it->getName() << " " << it->getCity() << " " << it->getCountry() << " "
-                  << it->getLatitude() << " " << it->getLongitude() << endl;
+        cout << it->second.getGIndex() <<"-"<<it->second.getCode() << " " << it->second.getName() << " " << it->second.getCity() << " " << it->second.getCountry() << " "
+                  << it->second.getLatitude() << " " << it->second.getLongitude() << endl;
         it++;
     }
-    */
+
 
     /**
     while (itAirlines != airlines.end()) {
@@ -50,7 +48,7 @@ void test() {
 
     flights.print();
 }
-
+/*
 void bestTravel(const string& origin, const string& destination) {
     auto airports = obj.getAirports();
     auto flights = obj.getFlights();
@@ -65,11 +63,12 @@ void bestTravel(const string& origin, const string& destination) {
     }
     cout << "Flight from " << from.getCode() << " - " << from.getName() << " to " << to.getCode() << " - " << to.getName() << endl;
 
-    flights.bestTravel(from, to);
+   // flights.bestTravel(from, to);
 }
-
+*/
 int main() {
     obj.readFiles( "airports.csv","airlines.csv", "flights.csv");
+    test();
     short entry = 0;
     string src, dest;
 
@@ -80,7 +79,7 @@ int main() {
             case 1:
                 cout << "Flight from: "; cin >> src;
                 cout << "Flight to: "; cin >> dest;
-                bestTravel(src, dest);
+                //bestTravel(src, dest);
                 break;
             case 2:
                 break;

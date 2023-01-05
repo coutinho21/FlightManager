@@ -1,6 +1,7 @@
 #include "Airport.h"
 
-Airport::Airport(string code, string name, string city, string country, double latitude, double longitude) {
+Airport::Airport(int i, string code, string name, string city, string country, double latitude, double longitude) {
+    this->gIndex = i;
     this->code = code;
     this->name = name;
     this->city = city;
@@ -8,6 +9,13 @@ Airport::Airport(string code, string name, string city, string country, double l
     this->latitude = latitude;
     this->longitude = longitude;
 }
+
+
+
+void Airport::setGIndex(int gIndex) {
+    Airport::gIndex = gIndex;
+}
+
 
 void Airport::setCode(const string &code) {
     Airport::code = code;
@@ -57,20 +65,9 @@ double Airport::getLongitude() const {
     return longitude;
 }
 
+int Airport::getGIndex() const {
+    return gIndex;
+}
 
-struct eAF {
-    bool operator() (const Airport& a1, const Airport& a2) const {
-        return a1.getCode() == a2.getCode();
-    }
-};
 
-struct hAF {
-    int operator() (const Airport& a) const {
-        string s1 = a.getCode();
-        int v = 0;
-        for (char i : s1)
-            v = 37*v + i;
-        return v;
-    }
-};
 

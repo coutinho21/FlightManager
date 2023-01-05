@@ -14,14 +14,13 @@ using namespace std;
 
 class Graph {
     struct Flight {
-        string destination;
-        double distance;
-        string airline;
+        int destination{};
+        double distance{};
+        Airline airline;
     };
 
     struct Node { //airport
-        string origin;
-        vector<Flight> flights;
+        list<Flight> flights;
         bool visited;
     };
 
@@ -29,7 +28,7 @@ class Graph {
     vector<Node> nodes;
 
 public:
-    void addEdge(const string& origin, const string& destination, const string& airline);
+    void addFlight(int origin, int destination, const Airline& airline);
     void print();
     static double calculateDistance(const Airport& a1, const Airport& a2);
     void bestTravel(const Airport& origin, const Airport& destination);

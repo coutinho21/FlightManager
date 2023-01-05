@@ -8,12 +8,17 @@ using namespace std;
 class Airport {
 
 private:
+    int gIndex;
     string code, name, city, country;
     double latitude{}, longitude{};
 public:
 
     Airport() = default;
-    Airport(string code, string name, string city, string country, double latitude, double longitude);
+    Airport(int i, string code, string name, string city, string country, double latitude, double longitude);
+
+    int getGIndex() const;
+
+    void setGIndex(int gIndex);
 
     const string &getCode() const;
 

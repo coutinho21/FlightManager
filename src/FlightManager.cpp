@@ -8,6 +8,8 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
     std::string token;
     Airport currentAirport;
     Airline currentAirline;
+    int index = 1;
+
 
 
     in1.open(file1);
@@ -25,12 +27,14 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
         std::vector<std::string> temp;
         std::string tempstr;
 
+
         while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
                 tempstr.erase(tempstr.size() - 1);
             temp.push_back(tempstr);
         }
 
+        currentAirport.setGIndex(index++);
         currentAirport.setCode(temp[0]);
         currentAirport.setName(temp[1]);
         currentAirport.setCity(temp[2]);
@@ -38,7 +42,8 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
         currentAirport.setLatitude(stod(temp[4]));
         currentAirport.setLongitude(stod(temp[5]));
 
-        airports.insert(currentAirport);
+        airports[currentAirport.getGIndex()] = currentAirport;
+
     }
 
 
@@ -47,6 +52,7 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
         std::stringstream iss(token);
         std::vector<std::string> temp;
         std::string tempstr;
+
 
         while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
@@ -68,6 +74,9 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
         std::stringstream iss(token);
         std::vector<std::string> temp;
         std::string tempstr;
+        int origin;
+        int destination;
+        Airline airline1;
 
         while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
@@ -75,11 +84,28 @@ void FlightManager::readFiles(const string &file1, const string &file2, const st
             temp.push_back(tempstr);
         }
 
-        flights.addEdge(temp[0], temp[1], temp[2]);
+        for(int i = 0; i<airports.size();i++){
+            if(airports[i].getCode() == temp[0])
+                origin = airports[i].getGIndex();
+            else if (airports[i].getCode() == temp[1])
+                destination = airports[i].getGIndex();
+
+        }
+
+        for(const Airline& airline : airlines){
+            if(airline.getCode() == temp[2]) {
+                airline1 = airline;
+                break;
+            }
+        }
+
+
+
+        flights.addFlight(origin, destination, airline1);
     }
 }
 
-const FlightManager::airportH &FlightManager::getAirports() const {
+const unordered_map<int,Airport>&FlightManager::getAirports() const {
     return this->airports;
 }
 
