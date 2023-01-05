@@ -1,19 +1,13 @@
 #include "Airport.h"
 
-Airport::Airport(int i, string code, string name, string city, string country, double latitude, double longitude) {
-    this->gIndex = i;
+Airport::Airport(string code, string name, string city, string country, double latitude, double longitude, bool visited) {
     this->code = code;
     this->name = name;
     this->city = city;
     this->country = country;
     this->latitude = latitude;
     this->longitude = longitude;
-}
-
-
-
-void Airport::setGIndex(int gIndex) {
-    Airport::gIndex = gIndex;
+    this->visited = visited;
 }
 
 
@@ -65,9 +59,10 @@ double Airport::getLongitude() const {
     return longitude;
 }
 
-int Airport::getGIndex() const {
-    return gIndex;
+void Airport::addFlight(Airport* destination, Airline* airline) {
+    flights.emplace_back(destination,airline);
 }
 
-
-
+vector<Flight> Airport::getFlights() const {
+    return flights;
+}
