@@ -14,6 +14,7 @@
 using namespace std;
 
 class Graph {
+
     int n{};       // size of graph
     unordered_map<string,Airport*> airports;
     unordered_map<string,Airline*> airlines;
@@ -24,6 +25,7 @@ public:
     unordered_map<string,Airport*> getAirports();
     unordered_map<string,Airline*> getAirlines();
 };
+
 
 
 #endif

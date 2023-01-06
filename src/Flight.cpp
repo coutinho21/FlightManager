@@ -28,3 +28,5 @@ double Flight::getDistance() const {
 void Flight::setDistance(double distance) {
     Flight::distance = distance;
 }
+
+

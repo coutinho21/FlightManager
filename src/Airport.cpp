@@ -10,6 +10,22 @@ Airport::Airport(string code, string name, string city, string country, double l
     this->visited = visited;
 }
 
+double Airport::getDistance() const {
+    return distance;
+}
+
+void Airport::setDistance(double distance) {
+    Airport::distance = distance;
+}
+
+bool Airport::isVisited() const {
+    return visited;
+}
+
+void Airport::setVisited(bool visited) {
+    Airport::visited = visited;
+}
+
 
 void Airport::setCode(const string &code) {
     Airport::code = code;
@@ -65,4 +81,16 @@ void Airport::addFlight(Airport* destination, Airline* airline) {
 
 vector<Flight> Airport::getFlights() const {
     return flights;
+}
+
+vector<Airport*> Airport::getScales() const {
+    return scales;
+}
+
+void Airport::setScales(vector<Airport*> scales) {
+    Airport::scales = scales;
+}
+
+void Airport::setFlights(const vector<Flight> &flights) {
+    Airport::flights = flights;
 }
