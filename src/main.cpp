@@ -6,13 +6,21 @@ using namespace std;
 
 Graph flightManager;
 
-void showMenu(){
+void showMenu() {
     cout << "\n";
     cout << "---------------------- Menu ----------------------" << endl;
     cout << "| 1- Best flight possible                        |" << endl;
     cout << "| 2- Airport info                                |" << endl;
     cout << "| 3- Book a flight                               |" << endl;
     cout << "| 0- Quit                                        |" << endl;
+    cout << "--------------------------------------------------" << endl;
+}
+
+
+void showBestFlightMenu() {
+    cout << "\n--------------------------------------------------" << endl;
+    cout << "| 1- Pesquisar por aeroporto                     |" << endl;
+    cout << "| 2- Pesquisar por cidade                        |" << endl;
     cout << "--------------------------------------------------" << endl;
 }
 
@@ -32,10 +40,11 @@ void test() {
     cout << d << " kilometers" << endl;
 
     while (it != airports.end()) {
-        for(Flight flight : it->second->getFlights()) {
+        for (Flight flight: it->second->getFlights()) {
             cout << "Flight from " << it->second->getCode() << " - " << it->second->getName() << " to "
                  << flight.getDestination()->getCode() << " - " << flight.getDestination()->getName()
-                 << " with airline " << flight.getAirline()->getCode() << " - " << flight.getAirline()->getName() << endl;
+                 << " with airline " << flight.getAirline()->getCode() << " - " << flight.getAirline()->getName()
+                 << endl;
         }
         it++;
     }
@@ -61,21 +70,34 @@ void test() {
 
 
 int main() {
-    flightManager.readFiles( "airports.csv","airlines.csv", "flights.csv");
+    flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
     //test();
     short entry = 0;
+    short type = 0;
     string src, dest;
 
-    while(entry != -1){
-        showMenu(); cin >> entry;
+    while (entry != -1) {
+        showMenu();
+        cin >> entry;
         cout << "\n";
 
         switch (entry) {
             case 1:
-                cout << "Flight from: "; cin >> src;
-                cout << "Flight to: "; cin >> dest;
+                showBestFlightMenu();
+                cin >> type;
                 cout << "\n";
-                flightManager.bestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
+                cout << "Flight from: ";
+                cin >> src;
+                cout << "Flight to: ";
+                cin >> dest;
+                cout << "\n";
+                if(type==1) {
+                    flightManager.bestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
+                }
+                if(type==2) {
+                    flightManager.bestTravelCity(src, dest);
+                }
+
                 break;
             case 2:
                 break;

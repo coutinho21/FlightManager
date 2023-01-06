@@ -162,3 +162,49 @@ void Graph::bestTravel( Airport* origin,  Airport* destination) {
     }
 
 }
+
+void Graph::bestTravelCity(string origin, string destination) {
+    vector<Airport*> originA;
+    vector<Airport*> destinationA;
+    int min = INT_MAX;
+
+    vector<Airport*> resOrigin;
+    vector<Airport*> resDestination;
+
+
+    for(auto airport : airports){
+        if(airport.second->getCity()==origin){
+            originA.push_back(airport.second);
+        }
+        if(airport.second->getCity()==destination){
+            destinationA.push_back(airport.second);
+        }
+    }
+
+    if(originA.size()==1 and destinationA.size()==1){
+        bestTravel(originA[0],destinationA[0]);
+    }
+    else {
+
+        for (auto pOrigin: originA) {
+            for (auto pDestination: destinationA) {
+                bestTravel(pOrigin, pDestination);
+                if (pDestination->getScales().size() < min) {
+                    resOrigin.clear();
+                    resDestination.clear();
+                    resOrigin.push_back(pOrigin);
+                    resDestination.push_back(pDestination);
+                }
+                if (pDestination->getScales().size() == min) {
+                    resOrigin.push_back(pOrigin);
+                    resDestination.push_back(pDestination);
+                }
+            }
+        }
+
+        for (int i = 0; i < resOrigin.size(); i++) {
+            bestTravel(resOrigin[i], resDestination[i]); //just need the cout part
+        }
+    }
+
+}
