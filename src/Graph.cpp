@@ -121,90 +121,103 @@ double Graph::calculateDistance(Airport *a1, Airport *a2) {
 }
 
 
-void Graph::bestTravel( Airport* origin,  Airport* destination) {
+Airport* Graph::bestTravel(Airport *origin, Airport *destination) {
 
     for (auto it: airports) it.second->setVisited(false);
-    for(auto it : airports) it.second->setScales({});
-    queue<Airport*> q; // queue of unvisited nodes
+    for (auto it: airports) it.second->setScales({});
+    queue<Airport *> q; // queue of unvisited nodes
     q.push(origin);
     origin->setVisited(true);
     origin->setDistance(0);
     while (!q.empty()) { // while there are still unvisited nodes
-        Airport* u = q.front();
+        Airport *u = q.front();
         q.pop();
         for (auto e: u->getFlights()) {
-            Airport* w = e.getDestination();
-            vector<Airport*> current;
+            Airport *w = e.getDestination();
+            vector<Airport *> current;
 
             if (!w->isVisited()) {
                 q.push(w);
                 w->setVisited(true);
-                double dist = calculateDistance(w,u);
-                w->setDistance(u->getDistance()+dist);
-                for(auto scale : u->getScales()){
+                double dist = calculateDistance(w, u);
+                w->setDistance(u->getDistance() + dist);
+                for (auto scale: u->getScales()) {
+                    //Flight f;
+                    //vector<Flight> fs;
+                    //for(Flight fl : u->getFlights()){
+                    //    if(fl.getDestination()==scale) {
+                     //       f.setAirline(fl.getAirline());
+                      //  }
+                   // }
+                    //fs.push_back(f);
+                    //scale->setFlights(fs);
                     current.push_back(scale);
+
                 }
                 current.push_back(u);
                 w->setScales(current);
             }
-            if(w==destination){
-                cout << "From " << origin->getName()  << " - " << origin->getCode() << " to " << destination->getName() << " - " << destination->getCode();
-                cout << "\nNumber of flights: "<< w->getScales().size() <<endl;
-                cout << "Path: ";
-                for(auto scale : w->getScales()){
-                    cout << scale->getName() << " - " << scale->getCode() << " ---> ";
-                }
-                cout << destination->getName()  << " - " <<destination->getCode()  << endl;
-
-                return;
+            if (w == destination) {
+                return w;
             }
         }
     }
-
+    Airport *empty{};
+    return empty;
 }
 
 void Graph::bestTravelCity(string origin, string destination) {
-    vector<Airport*> originA;
-    vector<Airport*> destinationA;
+    vector<Airport *> originA;
+    vector<Airport *> destinationA;
     int min = INT_MAX;
 
-    vector<Airport*> resOrigin;
-    vector<Airport*> resDestination;
+    vector<Airport *> resOrigin;
+    vector<Airport *> resDestination;
+    vector<Airport *> res;
 
 
-    for(auto airport : airports){
-        if(airport.second->getCity()==origin){
+    for (auto airport: airports) {
+        if (airport.second->getCity() == origin) {
             originA.push_back(airport.second);
         }
-        if(airport.second->getCity()==destination){
+        if (airport.second->getCity() == destination) {
             destinationA.push_back(airport.second);
         }
     }
-
-    if(originA.size()==1 and destinationA.size()==1){
-        bestTravel(originA[0],destinationA[0]);
-    }
-    else {
-
-        for (auto pOrigin: originA) {
-            for (auto pDestination: destinationA) {
-                bestTravel(pOrigin, pDestination);
-                if (pDestination->getScales().size() < min) {
-                    resOrigin.clear();
-                    resDestination.clear();
-                    resOrigin.push_back(pOrigin);
-                    resDestination.push_back(pDestination);
-                }
-                if (pDestination->getScales().size() == min) {
-                    resOrigin.push_back(pOrigin);
-                    resDestination.push_back(pDestination);
-                }
+    for (auto pOrigin: originA) {
+        for (auto pDestination: destinationA) {
+            Airport *check = bestTravel(pOrigin, pDestination);
+            if (check->getScales().size() < min) {
+                resOrigin.clear();
+                resDestination.clear();
+                resOrigin.push_back(pOrigin);
+                resDestination.push_back(pDestination);
+                min = check->getScales().size();
+            }
+            if (check->getScales().size() == min) {
+                resOrigin.push_back(pOrigin);
+                resDestination.push_back(pDestination);
             }
         }
-
-        for (int i = 0; i < resOrigin.size(); i++) {
-            bestTravel(resOrigin[i], resDestination[i]); //just need the cout part
-        }
     }
+
+    cout << "Best flights options from " << origin << " to " << destination << ": " << endl << "\n";
+    for (int i = 0; i < resOrigin.size(); i++) {
+        res.push_back(bestTravel(resOrigin[i], resDestination[i]));
+        cout << "From " << resOrigin[i]->getName() << " - " << resOrigin[i]->getCode() << " to "
+             << resDestination[i]->getName() << " - " << resDestination[i]->getCode();
+        cout << "\nNumber of flights: " << res.front()->getScales().size() << endl;
+        cout << "Path: ";
+        for (auto scale: res[i]->getScales()) {
+            cout << scale->getName() << " - " << scale->getCode()<< " "<< /*scale->getFlights()[0].getAirline() << " "<<
+            scale->getFlights().size() <<*/ " ---> ";
+        }
+        cout << resDestination[i]->getName() << " - " << resDestination[i]->getCode() << endl << "\n";
+    }
+
+
+}
+
+void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
 
 }
