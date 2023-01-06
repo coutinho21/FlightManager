@@ -148,13 +148,13 @@ void Graph::bestTravel( Airport* origin,  Airport* destination) {
                 w->setScales(current);
             }
             if(w==destination){
-                cout << "From " << origin->getCode() << " - " << origin->getName() << " to " << destination->getCode() << " - " << destination->getName() <<
-                     " doing "<< w->getScales().size() << " flights" << endl;
+                cout << "From " << origin->getName()  << " - " << origin->getCode() << " to " << destination->getName() << " - " << destination->getCode();
+                cout << "\nNumber of flights: "<< w->getScales().size() <<endl;
                 cout << "Path: ";
                 for(auto scale : w->getScales()){
-                    cout << scale->getCode() << " - " << scale->getName() << " -> ";
+                    cout << scale->getName() << " - " << scale->getCode() << " ---> ";
                 }
-                cout << destination->getCode() << " - " << destination->getName() << endl;
+                cout << destination->getName()  << " - " <<destination->getCode()  << endl;
 
                 return;
             }

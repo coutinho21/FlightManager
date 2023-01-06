@@ -62,17 +62,19 @@ void test() {
 
 int main() {
     flightManager.readFiles( "airports.csv","airlines.csv", "flights.csv");
-    test();
+    //test();
     short entry = 0;
     string src, dest;
 
     while(entry != -1){
         showMenu(); cin >> entry;
+        cout << "\n";
 
         switch (entry) {
             case 1:
                 cout << "Flight from: "; cin >> src;
                 cout << "Flight to: "; cin >> dest;
+                cout << "\n";
                 flightManager.bestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
                 break;
             case 2:
