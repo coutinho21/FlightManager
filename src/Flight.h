@@ -9,7 +9,10 @@ class Airport;
 class Flight {
     Airport *destination;
     Airline *airline;
-    double distance;
+    double distance{};
+
+
+
 public:
     Flight() = default;
     Flight(Airport *destination, Airline *airline);

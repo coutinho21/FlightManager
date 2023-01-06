@@ -120,25 +120,45 @@ double Graph::calculateDistance(Airport *a1, Airport *a2) {
     return earthRadius * c / 1000; // in km
 }
 
-/*
-void Graph::bestTravel(const Airport &origin, const Airport &destination) {
 
-    for (int i = 1; i <= nodes.size() - 1; i++) nodes[i].visited = false;
-    queue<Airport> q; // queue of unvisited nodes
+void Graph::bestTravel( Airport* origin,  Airport* destination) {
+
+    for (auto it: airports) it.second->setVisited(false);
+    for(auto it : airports) it.second->setScales({});
+    queue<Airport*> q; // queue of unvisited nodes
     q.push(origin);
-    nodes[].visited = true;
+    origin->setVisited(true);
+    origin->setDistance(0);
     while (!q.empty()) { // while there are still unvisited nodes
-        int u = q.front();
+        Airport* u = q.front();
         q.pop();
-// show node order
-//cout << u << " ";
-        for (auto e: nodes[u].adj) {
-            int w = e.dest;
-            if (!nodes[w].visited) {
+        for (auto e: u->getFlights()) {
+            Airport* w = e.getDestination();
+            vector<Airport*> current;
+
+            if (!w->isVisited()) {
                 q.push(w);
-                nodes[w].visited = true;
+                w->setVisited(true);
+                double dist = calculateDistance(w,u);
+                w->setDistance(u->getDistance()+dist);
+                for(auto scale : u->getScales()){
+                    current.push_back(scale);
+                }
+                current.push_back(u);
+                w->setScales(current);
+            }
+            if(w==destination){
+                cout << "From " << origin->getCode() << " - " << origin->getName() << " to " << destination->getCode() << " - " << destination->getName() <<
+                     " doing "<< w->getScales().size() << " flights" << endl;
+                cout << "Path: ";
+                for(auto scale : w->getScales()){
+                    cout << scale->getCode() << " - " << scale->getName() << " -> ";
+                }
+                cout << destination->getCode() << " - " << destination->getName() << endl;
+
+                return;
             }
         }
     }
+
 }
- */

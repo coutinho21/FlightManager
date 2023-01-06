@@ -57,7 +57,6 @@ void test() {
     }
 */
 
-
 }
 
 
@@ -74,7 +73,7 @@ int main() {
             case 1:
                 cout << "Flight from: "; cin >> src;
                 cout << "Flight to: "; cin >> dest;
-                //bestTravel(src, dest);
+                flightManager.bestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
                 break;
             case 2:
                 break;
