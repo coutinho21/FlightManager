@@ -184,7 +184,7 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
                 resDestination.push_back(pDestination);
                 min = check->getScales().size();
             }
-            if (check->getScales().size() == min) {
+            else if (check->getScales().size() == min) {
                 resOrigin.push_back(pOrigin);
                 resDestination.push_back(pDestination);
             }
@@ -216,3 +216,133 @@ void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
             " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
     cout << destination->getName() << " - " << destination->getCode() << endl;
 }
+
+int Graph::getNumberOfFlightsForAirport(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return -1;
+    }
+    Airport *airport = airports[airportCode];
+
+    //return the number of flights from the airport;
+    return airport->getFlights().size();
+}
+
+void Graph::listFlights(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return;
+    }
+    Airport *airport = airports[airportCode];
+
+    //list all the flights from the airport
+    for (auto flight : airport->getFlights()) {
+        cout << flight.getAirline()->getName() << "(" << flight.getAirline()->getCode() << ") - " << airportCode << " -> "
+             << flight.getDestination()->getCode() << " (" << flight.getDestination()->getCity() << ") "<< endl;
+    }
+}
+
+int Graph::getNumberOfAirlinesAirport(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return -1;
+    }
+    list<Airline*> airlines;
+    Airport *airport = airports[airportCode];
+
+    // Iterate over all the flights from this airport
+    for (auto flight : airport->getFlights()) {
+        Airline *airline = flight.getAirline();
+        airlines.push_back(airline);
+    }
+
+    // Remove duplicate entries from the list
+    airlines.sort();
+    airlines.unique();
+
+    // Return the number of airlines
+    return airlines.size();
+}
+
+void Graph::listAirlines(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return;
+    }
+    list<Airline*> airlines;
+    Airport *airport = airports[airportCode];
+
+    // Iterate over all the flights from this airport
+    for (auto flight : airport->getFlights()) {
+        Airline *airline = flight.getAirline();
+        airlines.push_back(airline);
+    }
+
+    // Remove duplicate entries from the list
+    airlines.sort();
+    airlines.unique();
+
+    for(auto airline : airlines)
+        cout << airline->getName() << " - " << airline->getCode() << endl;
+}
+
+int Graph::getNumberOfReachableCities(const string &airportCode) {
+    // Check if the airport exists in the graph
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist in the graph
+        return -1;
+    }
+
+    // Initialize a list to store the reachable cities
+    list<string> reachableCities;
+
+    // Initialize a queue to store the airports to visit
+    queue<Airport*> airportsToVisit;
+
+    // Add the starting airport to the queue
+    airportsToVisit.push(airports[airportCode]);
+
+    // While there are airports in the queue
+    while (!airportsToVisit.empty()) {
+        // Get the next airport from the queue
+        Airport *currentAirport = airportsToVisit.front();
+        airportsToVisit.pop();
+
+        // If the city for the current airport is not in the list
+        if (find(reachableCities.begin(), reachableCities.end(), currentAirport->getCity()) == reachableCities.end()) {
+            // Add the city for the current airport to the list
+            reachableCities.push_back(currentAirport->getCity());
+
+            // Add all the destination airports for the current airport to the queue
+            for (auto flight : currentAirport->getFlights()) {
+                Airport *destination = flight.getDestination();
+                airportsToVisit.push(destination);
+            }
+        }
+    }
+    reachableCities.sort();
+    reachableCities.unique();
+
+    // Return the size of the list (which is the number of reachable cities)
+    return reachableCities.size();
+}
+
+int Graph::getNumberOfReachableCountries(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return -1;
+    }
+    list<string> reachableCountries;
+    Airport *airport = airports[airportCode];
+    for(auto &flight: airport->getFlights()){
+        reachableCountries.push_back(flight.getDestination()->getCountry());
+    }
+    reachableCountries.sort();
+    reachableCountries.unique();
+    return reachableCountries.size();
+}
+
+
+
+
+
