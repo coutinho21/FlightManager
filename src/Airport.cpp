@@ -83,11 +83,11 @@ vector<Flight> Airport::getFlights() const {
     return flights;
 }
 
-vector<Airport*> Airport::getScales() const {
+vector<pair<Airport*, Airline*>> Airport::getScales() const {
     return scales;
 }
 
-void Airport::setScales(vector<Airport*> scales) {
+void Airport::setScales(vector<pair<Airport*,Airline*>> scales) {
     Airport::scales = scales;
 }
 
