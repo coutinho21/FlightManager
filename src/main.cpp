@@ -18,10 +18,11 @@ void showMenu() {
 
 
 void showBestFlightMenu() {
-    cout << "\n--------------------------------------------------" << endl;
-    cout << "| 1- Pesquisar por aeroporto                     |" << endl;
-    cout << "| 2- Pesquisar por cidade                        |" << endl;
-    cout << "--------------------------------------------------" << endl;
+    cout << "\n";
+    cout << "----------------------------------------------------" << endl;
+    cout << "| 1- Search by airport                             |" << endl;
+    cout << "| 2- Search by city                                |" << endl;
+    cout << "----------------------------------------------------" << endl;
 }
 
 void test() {
@@ -49,29 +50,28 @@ void test() {
         it++;
     }
 
-/*
+
     while (it != airports.end()) {
         cout << it->second->getCode() << " " << it->second->getName() << " " << it->second->getCity() << " "
              << it->second->getCountry() << " "
              << it->second->getLatitude() << " " << it->second->getLongitude() << endl;
         it++;
     }
-*/
-/*
+
+
     while (itAirlines != airlines.end()) {
         cout << itAirlines->second->getCode() << " " << itAirlines->second->getName() << " "
              << itAirlines->second->getCallSign()
              << " " << itAirlines->second->getCountry() << endl;
         itAirlines++;
     }
-*/
+
 
 }
 
 
 int main() {
     flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
-    //test();
     short entry = 0, type = 0;
     string src, dest;
 
@@ -85,13 +85,10 @@ int main() {
                 showBestFlightMenu(); cin >> type;
                 cout << "Flight from: "; getline(cin >> ws, src);
                 cout << "Flight to: "; getline(cin >> ws, dest);
-                if(type==1) {
+                if(type==1)
                     flightManager.bestTravelAirport(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
-                }
-                if(type==2) {
+                if(type==2)
                     flightManager.bestTravelCity(src, dest);
-                }
-
                 break;
             case 2:
                 break;
