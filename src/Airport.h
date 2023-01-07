@@ -13,7 +13,7 @@ class Flight;
 class Airport {
     string code, name, city, country;
     double latitude{}, longitude{}, distance{};
-    vector<Airport*> scales{};
+    vector<pair<Airport*, Airline*>> scales{};
     bool visited = false;
     vector<Flight> flights;
 public:
@@ -57,9 +57,9 @@ public:
 
     void setDistance(double distance);
 
-    vector<Airport*> getScales() const;
+    vector<pair<Airport*, Airline*>> getScales() const;
 
-    void setScales(vector<Airport*> scales);
+    void setScales(vector<pair<Airport*, Airline*>> scales);
 
     void setFlights(const vector<Flight> &flights);
 
