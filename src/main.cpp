@@ -16,7 +16,6 @@ void showMenu() {
     cout << "--------------------------------------------------" << endl;
 }
 
-
 void showBestFlightMenu() {
     cout << "\n";
     cout << "----------------------------------------------------" << endl;
@@ -50,7 +49,6 @@ void test() {
         it++;
     }
 
-
     while (it != airports.end()) {
         cout << it->second->getCode() << " " << it->second->getName() << " " << it->second->getCity() << " "
              << it->second->getCountry() << " "
@@ -58,15 +56,12 @@ void test() {
         it++;
     }
 
-
     while (itAirlines != airlines.end()) {
         cout << itAirlines->second->getCode() << " " << itAirlines->second->getName() << " "
              << itAirlines->second->getCallSign()
              << " " << itAirlines->second->getCountry() << endl;
         itAirlines++;
     }
-
-
 }
 
 

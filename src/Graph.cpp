@@ -184,7 +184,7 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
                 resDestination.push_back(pDestination);
                 min = check->getScales().size();
             }
-            if (check->getScales().size() == min) {
+            else if (check->getScales().size() == min) {
                 resOrigin.push_back(pOrigin);
                 resDestination.push_back(pDestination);
             }
