@@ -236,7 +236,7 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
         res.push_back(bestTravel(resOrigin[i], resDestination[i]));
         cout << "From " << resOrigin[i]->getName() << " - " << resOrigin[i]->getCode() << " to "
              << resDestination[i]->getName() << " - " << resDestination[i]->getCode();
-        cout << "\nNumber of flights: " << res.front()->getScales().size() << endl;
+        cout << "\nNumber of flights needed: " << res.front()->getScales().size() << endl;
         cout << "Path: ";
         for (auto scale: res[i]->getScales())
             cout << scale.first->getName() << " - " << scale.first->getCode() <<

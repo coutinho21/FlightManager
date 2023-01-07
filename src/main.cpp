@@ -40,6 +40,15 @@ void showAirportInfoMenu() {
     cout << "Pick an option: ";
 }
 
+void pickAirline() {
+    cout << "\n";
+    cout << "-------------------------------------------------" << endl;
+    cout << "| 1- Fly using one airline                      |" << endl;
+    cout << "| 2- Fly using several airlines                 |" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "Pick an option: ";
+}
+
 void test() {
 
     auto airports = flightManager.getAirports();
@@ -167,16 +176,31 @@ int main() {
                     }
                 }
             case 3:
-                cout << "Origin Airport code:" << endl;
+                cout << "=========================" << endl;
+                cout << "||                     ||" << endl;
+                cout << "||  Book your flight!  ||" << endl;
+                cout << "||                     ||" << endl;
+                cout << "=========================" << endl;
+                cout << "\n";
+                cout << "Select Origin Airport:" << endl;
                 getline(cin >> ws, src);
                 for (int i = 0; i < src.size(); i++) src[i] = toupper(src[i]);
-                cout << "Destination Airport code:" << endl;
+                cout << "Select Destination Airport:" << endl;
                 getline(cin >> ws, dest);
                 for (int i = 0; i < dest.size(); i++) dest[i] = toupper(dest[i]);
-                cout << "Airline:" << endl;
-                getline(cin >> ws, code);
-                for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
-                flightManager.oneAirlineBestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest], code);
+                pickAirline();
+                cin >> type;
+                cout << "\n";
+                switch(type){
+                    case 1:
+                        cout << "Select Airline:" << endl;
+                        getline(cin >> ws, code);
+                        for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
+                        flightManager.oneAirlineBestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest], code);
+                        break;
+                    case 2:
+                        cout << "És ganda nabo!" << endl;
+                }
                 break;
             case 0:
                 entry = -1;
