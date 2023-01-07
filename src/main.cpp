@@ -100,7 +100,9 @@ int main() {
             case 1:
                 showBestFlightMenu(); cin >> type;
                 cout << "Flight from: "; getline(cin >> ws, src);
+                for(int i = 0; i < src.size(); i++) src[i] = toupper(src[i]);
                 cout << "Flight to: "; getline(cin >> ws, dest);
+                for(int i = 0; i < dest.size(); i++) dest[i] = toupper(dest[i]);
                 if(type==1)
                     flightManager.bestTravelAirport(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
                 if(type==2)
