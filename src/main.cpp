@@ -139,6 +139,11 @@ int main() {
                     case 5:
                         break;
                     case 6:
+                        numberOfCities = flightManager.getNumberOfReachableCities(code);
+                        if(numberOfCities == -1)
+                            cout << "Airport not found!" << endl;
+                        else
+                            cout << "Number of reachable cities: " << numberOfCities << endl;
                         break;
                     default:
                         break;
