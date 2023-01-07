@@ -332,28 +332,11 @@ int Graph::getNumberOfReachableCountries(const string &airportCode) {
         // Airport does not exist
         return -1;
     }
-
     list<string> reachableCountries;
-    queue<Airport*> airportsToVisit;
-    airportsToVisit.push(airports[airportCode]);
-
-    while (!airportsToVisit.empty()) {
-        Airport *currentAirport = airportsToVisit.front();
-        airportsToVisit.pop();
-
-        // If the country for the current airport has not been visited yet
-        if (find(reachableCountries.begin(), reachableCountries.end(), currentAirport->getCountry()) == reachableCountries.end()) {
-            reachableCountries.push_back(currentAirport->getCountry());
-
-
-            // Add all the destination airports for the current airport to the queue
-            for (auto flight : currentAirport->getFlights()) {
-                Airport *destination = flight.getDestination();
-                airportsToVisit.push(destination);
-            }
-        }
+    Airport *airport = airports[airportCode];
+    for(auto &flight: airport->getFlights()){
+        reachableCountries.push_back(flight.getDestination()->getCountry());
     }
-
     reachableCountries.sort();
     reachableCountries.unique();
     return reachableCountries.size();
