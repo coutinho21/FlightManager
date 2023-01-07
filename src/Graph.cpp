@@ -247,14 +247,21 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
 
 void Graph::oneAirlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode) {
     Airport *w = airlineBestTravel(origin, destination, airlineCode);
-    cout << "Flight from " << origin->getName() <<  " - " <<  origin->getCode() << " to "
-         << destination->getName() << " - " <<  destination->getCode() << endl;
-    cout << "Number of flights: " << w->getScales().size() << endl;
-    cout << "Path: ";
-    for(auto scale : w->getScales())
-        cout << scale.first->getName() << " - " << scale.first->getCode() <<
-             " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
-    cout << destination->getName() << " - " << destination->getCode() << endl;
+    if(w == nullptr) {
+        cout << "There is no flight from " << origin->getName() << " - " << origin->getCode() << " to "
+             << destination->getName() << " - " << destination->getCode() << " using only" << airlineCode << endl;
+        return;
+    }
+    else{
+        cout << "Flight from " << origin->getName() <<  " - " <<  origin->getCode() << " to "
+             << destination->getName() << " - " <<  destination->getCode() << endl;
+        cout << "Number of flights: " << w->getScales().size() << endl;
+        cout << "Path: ";
+        for(auto scale : w->getScales())
+            cout << scale.first->getName() << " - " << scale.first->getCode() <<
+                 " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
+        cout << destination->getName() << " - " << destination->getCode() << endl;
+    }
 }
 
 
