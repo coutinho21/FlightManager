@@ -35,6 +35,12 @@ public:
     int getNumberOfReachableCities(const string &airportCode);
 
     int getNumberOfReachableCountries(const string &airportCode);
+
+    Airport *airlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode);
+
+    void oneAirlineBestTravel(Airport *origin, Airport *destination);
+
+    void oneAirlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode);
 };
 
 

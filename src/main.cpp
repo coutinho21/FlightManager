@@ -167,6 +167,16 @@ int main() {
                     }
                 }
             case 3:
+                cout << "Origin Airport code:" << endl;
+                getline(cin >> ws, src);
+                for (int i = 0; i < src.size(); i++) src[i] = toupper(src[i]);
+                cout << "Destination Airport code:" << endl;
+                getline(cin >> ws, dest);
+                for (int i = 0; i < dest.size(); i++) dest[i] = toupper(dest[i]);
+                cout << "Airline:" << endl;
+                getline(cin >> ws, code);
+                for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
+                flightManager.oneAirlineBestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest], code);
                 break;
             case 0:
                 entry = -1;
