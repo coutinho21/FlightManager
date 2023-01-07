@@ -26,6 +26,8 @@ public:
     void bestTravelCity(const string& origin, const string& destination);
     unordered_map<string,Airport*> getAirports();
     unordered_map<string,Airline*> getAirlines();
+
+    int getNumberOfFlightsForAirport(const string &airportCode);
 };
 
 

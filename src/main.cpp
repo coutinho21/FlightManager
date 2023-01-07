@@ -27,7 +27,7 @@ void showBestFlightMenu() {
 
 void showAirportInfoMenu() {
     cout << "\n";
-    cout << "----------------------------------------------------" << endl;
+    cout << "----------------------- Menu -----------------------" << endl;
     cout << "| 1- List of Flights                               |" << endl;
     cout << "| 2- Number of Flights                             |" << endl;
     cout << "| 3- List of Airlines                              |" << endl;
@@ -86,7 +86,8 @@ void test() {
 int main() {
     flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
     short entry = 0, type = 0;
-    string src, dest;
+    string src, dest, code;
+    int numberOfFlights;
 
     while (entry != -1) {
         showMenu();
@@ -104,6 +105,31 @@ int main() {
                     flightManager.bestTravelCity(src, dest);
                 break;
             case 2:
+                showAirportInfoMenu(); cin >> type;
+                switch (type) {
+                    case 1:
+                        break;
+                    case 2:
+                        cout << "Airport Code: "; getline(cin >> ws, code);
+                        for(auto &ch: code) ch = toupper(ch);
+                        numberOfFlights = flightManager.getNumberOfFlightsForAirport(code);
+                        cout << "-------------------------------|" << endl;
+                        if(numberOfFlights == -1)
+                            cout << "Airport not found!" << endl;
+                        else
+                            cout << "Number of flights: " << numberOfFlights << endl;
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case 3:
                 break;

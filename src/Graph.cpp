@@ -216,3 +216,13 @@ void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
             " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
     cout << destination->getName() << " - " << destination->getCode() << endl;
 }
+
+int Graph::getNumberOfFlightsForAirport(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return -1;
+    }
+    Airport *airport = airports[airportCode];
+    return airport->getFlights().size();
+}
+
