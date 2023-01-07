@@ -320,14 +320,46 @@ int Graph::getNumberOfReachableCities(const string &airportCode) {
             }
         }
     }
-
-    // Remove duplicate entries from the list
     reachableCities.sort();
     reachableCities.unique();
 
     // Return the size of the list (which is the number of reachable cities)
     return reachableCities.size();
 }
+
+int Graph::getNumberOfReachableCountries(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return -1;
+    }
+
+    list<string> reachableCountries;
+    queue<Airport*> airportsToVisit;
+    airportsToVisit.push(airports[airportCode]);
+
+    while (!airportsToVisit.empty()) {
+        Airport *currentAirport = airportsToVisit.front();
+        airportsToVisit.pop();
+
+        // If the country for the current airport has not been visited yet
+        if (find(reachableCountries.begin(), reachableCountries.end(), currentAirport->getCountry()) == reachableCountries.end()) {
+            reachableCountries.push_back(currentAirport->getCountry());
+
+
+            // Add all the destination airports for the current airport to the queue
+            for (auto flight : currentAirport->getFlights()) {
+                Airport *destination = flight.getDestination();
+                airportsToVisit.push(destination);
+            }
+        }
+    }
+
+    reachableCountries.sort();
+    reachableCountries.unique();
+    return reachableCountries.size();
+}
+
+
 
 
 

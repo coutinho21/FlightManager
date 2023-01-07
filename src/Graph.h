@@ -33,6 +33,8 @@ public:
     void listFlights(const string &airportCode);
 
     int getNumberOfReachableCities(const string &airportCode);
+
+    int getNumberOfReachableCountries(const string &airportCode);
 };
 
 

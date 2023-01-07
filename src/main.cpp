@@ -14,8 +14,8 @@ void showMenu() {
     cout << "| 3- Book a flight                               |" << endl;
     cout << "| 0- Quit                                        |" << endl;
     cout << "--------------------------------------------------" << endl;
+    cout << "Pick an option: ";
 }
-
 
 void showBestFlightMenu() {
     cout << "\n";
@@ -23,6 +23,7 @@ void showBestFlightMenu() {
     cout << "| 1- Search by airport                             |" << endl;
     cout << "| 2- Search by city                                |" << endl;
     cout << "----------------------------------------------------" << endl;
+    cout << "Pick an option: ";
 }
 
 void showAirportInfoMenu() {
@@ -32,10 +33,11 @@ void showAirportInfoMenu() {
     cout << "| 2- Number of Flights                           |" << endl;
     cout << "| 3- List of Airlines                            |" << endl;
     cout << "| 4- Number of Airlines                          |" << endl;
-    cout << "| 5- List of Reachable cities                    |" << endl;
+    cout << "| 5- Number of Reachable countries               |" << endl;
     cout << "| 6- Number of Reachable cities                  |" << endl;
     cout << "| 0- Quit                                        |" << endl;
     cout << "--------------------------------------------------" << endl;
+    cout << "Pick an option: ";
 }
 
 void test() {
@@ -87,7 +89,7 @@ int main() {
     flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
     short entry = 0, type = 0;
     string src, dest, code, city;
-    int numberOfFlights, numberOfAirlines, numberOfCities;
+    int numberOfFlights, numberOfAirlines, numberOfCities, numberOfCountries;
 
     while (entry != -1) {
         showMenu();
@@ -137,6 +139,11 @@ int main() {
                             cout << "Number of airlines: " << numberOfAirlines << endl;
                         break;
                     case 5:
+                        numberOfCountries = flightManager.getNumberOfReachableCountries(code);
+                        if(numberOfCountries == -1)
+                            cout << "Airport not found!" << endl;
+                        else
+                            cout << "Number of reachable countries: " << numberOfCountries << endl;
                         break;
                     case 6:
                         numberOfCities = flightManager.getNumberOfReachableCities(code);
