@@ -72,8 +72,7 @@ void test() {
 int main() {
     flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
     //test();
-    short entry = 0;
-    short type = 0;
+    short entry = 0, type = 0;
     string src, dest;
 
     while (entry != -1) {
@@ -83,16 +82,11 @@ int main() {
 
         switch (entry) {
             case 1:
-                showBestFlightMenu();
-                cin >> type;
-                cout << "\n";
-                cout << "Flight from: ";
-                cin >> src;
-                cout << "Flight to: ";
-                cin >> dest;
-                cout << "\n";
+                showBestFlightMenu(); cin >> type;
+                cout << "Flight from: "; getline(cin >> ws, src);
+                cout << "Flight to: "; getline(cin >> ws, dest);
                 if(type==1) {
-                    flightManager.bestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
+                    flightManager.bestTravelAirport(flightManager.getAirports()[src], flightManager.getAirports()[dest]);
                 }
                 if(type==2) {
                     flightManager.bestTravelCity(src, dest);

@@ -23,7 +23,7 @@ public:
     static double calculateDistance(Airport* a1, Airport* a2);
     Airport* bestTravel(Airport* origin, Airport* destination);
     void bestTravelAirport(Airport* origin, Airport* destination);
-    void bestTravelCity(string origin, string destination);
+    void bestTravelCity(const string& origin, const string& destination);
     unordered_map<string,Airport*> getAirports();
     unordered_map<string,Airline*> getAirlines();
 };

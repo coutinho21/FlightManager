@@ -166,7 +166,7 @@ Airport* Graph::bestTravel(Airport *origin, Airport *destination) {
     return empty;
 }
 
-void Graph::bestTravelCity(string origin, string destination) {
+void Graph::bestTravelCity(const string& origin, const string& destination) {
     vector<Airport *> originA;
     vector<Airport *> destinationA;
     int min = INT_MAX;
@@ -176,14 +176,14 @@ void Graph::bestTravelCity(string origin, string destination) {
     vector<Airport *> res;
 
 
-    for (auto airport: airports) {
-        if (airport.second->getCity() == origin) {
+    for (const auto& airport: airports) {
+        if (airport.second->getCity() == origin)
             originA.push_back(airport.second);
-        }
-        if (airport.second->getCity() == destination) {
+
+        if (airport.second->getCity() == destination)
             destinationA.push_back(airport.second);
-        }
     }
+
     for (auto pOrigin: originA) {
         for (auto pDestination: destinationA) {
             Airport *check = bestTravel(pOrigin, pDestination);
@@ -201,7 +201,7 @@ void Graph::bestTravelCity(string origin, string destination) {
         }
     }
 
-    cout << "Best flights options from " << origin << " to " << destination << ": " << endl << "\n";
+    cout << "\nBest flights options from " << origin << " to " << destination << ": " << endl << "\n";
     for (int i = 0; i < resOrigin.size(); i++) {
         res.push_back(bestTravel(resOrigin[i], resDestination[i]));
         cout << "From " << resOrigin[i]->getName() << " - " << resOrigin[i]->getCode() << " to "
@@ -209,15 +209,21 @@ void Graph::bestTravelCity(string origin, string destination) {
         cout << "\nNumber of flights: " << res.front()->getScales().size() << endl;
         cout << "Path: ";
         for (auto scale: res[i]->getScales()) {
-            cout << scale->getName() << " - " << scale->getCode()<< " "<< /*scale->getFlights()[0].getAirline() << " "<<
+            cout << scale->getName() << " - " << scale->getCode() << " " << /*scale->getFlights()[0].getAirline() << " "<<
             scale->getFlights().size() <<*/ " ---> ";
         }
         cout << resDestination[i]->getName() << " - " << resDestination[i]->getCode() << endl << "\n";
     }
-
-
 }
 
 void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
-
+    Airport *w = bestTravel(origin, destination);
+    cout << "Flight from " << origin->getName() <<  " - " <<  origin->getCode() << " to "
+    << destination->getName() << " - " <<  destination->getCode() << endl;
+    cout << "Number of flights: " << w->getScales().size() << endl;
+    cout << "Path: ";
+    for(auto scale : w->getScales()){
+        cout << scale->getName() << " - " << scale->getCode() << " ---> ";
+    }
+    cout << destination->getName() << " - " << destination->getCode() << endl;
 }
