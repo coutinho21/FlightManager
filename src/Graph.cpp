@@ -199,7 +199,8 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
         cout << "\nNumber of flights: " << res.front()->getScales().size() << endl;
         cout << "Path: ";
         for (auto scale: res[i]->getScales())
-            cout << scale.first->getName() << " - " << scale.first->getCode() << " ---> ";
+            cout << scale.first->getName() << " - " << scale.first->getCode() <<
+                 " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
         cout << resDestination[i]->getName() << " - " << resDestination[i]->getCode() << endl << "\n";
     }
 }
@@ -210,9 +211,8 @@ void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
     << destination->getName() << " - " <<  destination->getCode() << endl;
     cout << "Number of flights: " << w->getScales().size() << endl;
     cout << "Path: ";
-    for(auto scale : w->getScales()){
+    for(auto scale : w->getScales())
         cout << scale.first->getName() << " - " << scale.first->getCode() <<
-        " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
-    }
+            " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
     cout << destination->getName() << " - " << destination->getCode() << endl;
 }
