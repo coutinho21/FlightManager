@@ -223,6 +223,33 @@ int Graph::getNumberOfFlightsForAirport(const string &airportCode) {
         return -1;
     }
     Airport *airport = airports[airportCode];
+
+    //return the number of flights from the airport;
     return airport->getFlights().size();
 }
+
+
+int Graph::getNumberOfAirlinesAirport(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return -1;
+    }
+    list<Airline*> airlines;
+    Airport *airport = airports[airportCode];
+
+    // Iterate over all the flights from this airport
+    for (auto flight : airport->getFlights()) {
+        Airline *airline = flight.getAirline();
+        airlines.push_back(airline);
+    }
+
+    // Remove duplicate entries from the list
+    airlines.sort();
+    airlines.unique();
+
+    // Return the number of airlines
+    return airlines.size();
+}
+
+
 

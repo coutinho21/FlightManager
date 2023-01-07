@@ -28,6 +28,7 @@ public:
     unordered_map<string,Airline*> getAirlines();
 
     int getNumberOfFlightsForAirport(const string &airportCode);
+    int getNumberOfAirlinesAirport(const string &airportCode);
 };
 
 
