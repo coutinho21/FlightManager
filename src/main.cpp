@@ -25,6 +25,19 @@ void showBestFlightMenu() {
     cout << "----------------------------------------------------" << endl;
 }
 
+void showAirportInfoMenu() {
+    cout << "\n";
+    cout << "----------------------------------------------------" << endl;
+    cout << "| 1- List of Flights                               |" << endl;
+    cout << "| 2- Number of Flights                             |" << endl;
+    cout << "| 3- List of Airlines                              |" << endl;
+    cout << "| 4- Number of Airlines                            |" << endl;
+    cout << "| 5- List of Reachable cities                      |" << endl;
+    cout << "| 6- Number of Reachable cities                    |" << endl;
+    cout << "| 0- Quit                                          |" << endl;
+    cout << "----------------------------------------------------" << endl;
+}
+
 void test() {
 
     auto airports = flightManager.getAirports();
