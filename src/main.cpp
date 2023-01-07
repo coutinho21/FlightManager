@@ -86,7 +86,7 @@ void test() {
 int main() {
     flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
     short entry = 0, type = 0;
-    string src, dest, code;
+    string src, dest, code, city;
     int numberOfFlights, numberOfAirlines, numberOfCities;
 
     while (entry != -1) {
@@ -106,12 +106,16 @@ int main() {
                 break;
             case 2:
                 cout << "Airport Code: "; getline(cin >> ws, code);
+                for(auto &ch: code) ch = toupper(ch);
+                city = flightManager.getAirports()[code]->getCity();
                 showAirportInfoMenu(); cin >> type;
                 switch (type) {
                     case 1:
+                        cout << "List of Flights from " << code << " (" << city << "):" << endl;
+                        cout << "\n";
+                        flightManager.listFlights(code);
                         break;
                     case 2:
-                        for(auto &ch: code) ch = toupper(ch);
                         numberOfFlights = flightManager.getNumberOfFlightsForAirport(code);
                         cout << "-------------------------------|" << endl;
                         if(numberOfFlights == -1)
@@ -120,6 +124,9 @@ int main() {
                             cout << "Number of flights: " << numberOfFlights << endl;
                         break;
                     case 3:
+                        cout << "Airlines with flights from " << code <<  ":" << endl;
+                        cout << "\n";
+                        flightManager.listAirlines(code);
                         break;
                     case 4:
                         numberOfAirlines = flightManager.getNumberOfAirlinesAirport(code);

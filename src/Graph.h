@@ -29,6 +29,8 @@ public:
 
     int getNumberOfFlightsForAirport(const string &airportCode);
     int getNumberOfAirlinesAirport(const string &airportCode);
+    void listAirlines(const string &airportCode);
+    void listFlights(const string &airportCode);
 };
 
 

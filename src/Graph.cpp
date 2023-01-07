@@ -228,6 +228,19 @@ int Graph::getNumberOfFlightsForAirport(const string &airportCode) {
     return airport->getFlights().size();
 }
 
+void Graph::listFlights(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return;
+    }
+    Airport *airport = airports[airportCode];
+
+    //list all the flights from the airport
+    for (auto flight : airport->getFlights()) {
+        cout << flight.getAirline()->getName() << "(" << flight.getAirline()->getCode() << ") - " << airportCode << " -> "
+             << flight.getDestination()->getCode() << " (" << flight.getDestination()->getCity() << ") "<< endl;
+    }
+}
 
 int Graph::getNumberOfAirlinesAirport(const string &airportCode) {
     if (airports.find(airportCode) == airports.end()) {
@@ -249,6 +262,28 @@ int Graph::getNumberOfAirlinesAirport(const string &airportCode) {
 
     // Return the number of airlines
     return airlines.size();
+}
+
+void Graph::listAirlines(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return;
+    }
+    list<Airline*> airlines;
+    Airport *airport = airports[airportCode];
+
+    // Iterate over all the flights from this airport
+    for (auto flight : airport->getFlights()) {
+        Airline *airline = flight.getAirline();
+        airlines.push_back(airline);
+    }
+
+    // Remove duplicate entries from the list
+    airlines.sort();
+    airlines.unique();
+
+    for(auto airline : airlines)
+        cout << airline->getName() << " - " << airline->getCode() << endl;
 }
 
 
