@@ -94,7 +94,8 @@ int main() {
     flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
     short entry = 0, type = 0;
     string src, dest, code, city;
-    int numberOfFlights, numberOfAirlines, numberOfCities, numberOfCountries;
+    int numberOfFlights, numberOfAirlines, numberOfCities, numberOfCountries, response;
+    vector<string> airlineCodes;
 
     while (entry != -1) {
         showMenu();
@@ -199,7 +200,20 @@ int main() {
                         flightManager.oneAirlineBestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest], code);
                         break;
                     case 2:
-                        cout << "És ganda nabo!" << endl;
+                        cout << "How many airlines would you like to use?:" << endl;
+                        cin >> response;
+                        cout << "\n";
+                        cout << "Select First Airline:" << endl;
+                        getline(cin >> ws, code);
+                        for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
+                        airlineCodes.push_back(code);
+                        for(int i = 1; i < response; i++){
+                            cout << "Select Another Airline:" << endl;
+                            getline(cin >> ws, code);
+                            for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
+                            airlineCodes.push_back(code);
+                        }
+                        flightManager.multipleAirlinesPrint(flightManager.getAirports()[src], flightManager.getAirports()[dest], airlineCodes);
                 }
                 break;
             case 0:

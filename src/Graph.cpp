@@ -264,6 +264,64 @@ void Graph::oneAirlineBestTravel(Airport *origin, Airport *destination, const st
     }
 }
 
+Airport* Graph::multipleAirlineBestTravel(Airport *origin, Airport *destination, const vector<string> &airlineCodes) {
+    for (auto it: airports) it.second->setVisited(false);
+    for (auto it: airports) it.second->setScales({});
+    queue<Airport *> q; // queue of unvisited nodes
+    q.push(origin);
+    origin->setVisited(true);
+    origin->setDistance(0);
+    while (!q.empty()) { // while there are still unvisited nodes
+        Airport *u = q.front();
+        q.pop();
+        for (auto e: u->getFlights()) {
+            // Check if the current flight uses one of the specified airlines
+            if (find(airlineCodes.begin(), airlineCodes.end(), e.getAirline()->getCode()) == airlineCodes.end()) {
+                continue;
+            }
+
+            Airport *w = e.getDestination();
+            vector<pair<Airport*, Airline*>> current;
+            pair<Airport*, Airline*> curr;
+            if (!w->isVisited()) {
+                q.push(w);
+                w->setVisited(true);
+                double dist = calculateDistance(w, u);
+                w->setDistance(u->getDistance() + dist);
+                for (auto scale: u->getScales())
+                    current.push_back(scale);
+                curr.first = u;
+                curr.second = e.getAirline();
+                current.push_back(curr);
+                w->setScales(current);
+            }
+            if (w == destination)
+                return w;
+        }
+    }
+    Airport *empty{};
+    return empty;
+}
+
+void Graph::multipleAirlinesPrint(Airport *origin, Airport *destination, const vector<string> &airlineCodes) {
+    Airport *w = multipleAirlineBestTravel(origin, destination, airlineCodes);
+    if(w == nullptr) {
+        cout << "There is no flight from " << origin->getName() << " - " << origin->getCode() << " to "
+             << destination->getName() << " - " << destination->getCode() << " using only the specified airlines" << endl;
+        return;
+    }
+    else{
+        cout << "Flight from " << origin->getName() <<  " - " <<  origin->getCode() << " to "
+             << destination->getName() << " - " <<  destination->getCode() << endl;
+        cout << "Number of flights: " << w->getScales().size() << endl;
+        cout << "Path: ";
+        for(auto scale : w->getScales())
+            cout << scale.first->getName() << " - " << scale.first->getCode() <<
+                 " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
+        cout << destination->getName() << " - " << destination->getCode() << endl;
+    }
+}
+
 
 void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
     Airport *w = bestTravel(origin, destination);
