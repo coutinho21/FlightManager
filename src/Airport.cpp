@@ -1,6 +1,7 @@
 #include "Airport.h"
 
-Airport::Airport(string code, string name, string city, string country, double latitude, double longitude, bool visited) {
+Airport::Airport(string code, string name, string city, string country, double latitude, double longitude,
+                 bool visited) {
     this->code = code;
     this->name = name;
     this->city = city;
@@ -75,19 +76,19 @@ double Airport::getLongitude() const {
     return longitude;
 }
 
-void Airport::addFlight(Airport* destination, Airline* airline) {
-    flights.emplace_back(destination,airline);
+void Airport::addFlight(Airport *destination, Airline *airline) {
+    flights.emplace_back(destination, airline);
 }
 
 vector<Flight> Airport::getFlights() const {
     return flights;
 }
 
-vector<pair<Airport*, Airline*>> Airport::getScales() const {
+vector<pair<Airport *, Airline *>> Airport::getScales() const {
     return scales;
 }
 
-void Airport::setScales(vector<pair<Airport*,Airline*>> scales) {
+void Airport::setScales(vector<pair<Airport *, Airline *>> scales) {
     Airport::scales = scales;
 }
 

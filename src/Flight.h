@@ -6,15 +6,16 @@
 
 class Airport;
 
+/*
+ * Class that represents the flights (a edge in the graph)
+ */
 class Flight {
-    Airport *destination;
+    Airport *destination; // destination node
     Airline *airline;
     double distance{};
-
-
-
 public:
     Flight() = default;
+
     Flight(Airport *destination, Airline *airline);
 
     Airport *getDestination() const;
