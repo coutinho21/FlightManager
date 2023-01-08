@@ -52,8 +52,8 @@ void pickAirline() {
 void pickNumFlights() {
     cout << "\n";
     cout << "---------------------------------------------------" << endl;
-    cout << "| 1- Find Reachable cities within one flight      |" << endl;
-    cout << "| 2- Find Reachable cities within multiple flight |" << endl;
+    cout << "| 1- Find within one flight                       |" << endl;
+    cout << "| 2- Find within multiple flights                 |" << endl;
     cout << "---------------------------------------------------" << endl;
     cout << "Pick an option: ";
 }
@@ -164,11 +164,18 @@ int main() {
                                 cout << "Number of airlines: " << numberOfAirlines << endl;
                             break;
                         case 5:
-                            numberOfCountries = flightManager.getNumberOfReachableCountries(code);
-                            if (numberOfCountries == -1)
-                                cout << "Airport not found!" << endl;
-                            else
-                                cout << "Number of reachable countries: " << numberOfCountries << endl;
+                            pickNumFlights();
+                            cin >> response;
+                            if(response == 1) {
+                                cout << "Number of reachable countries from " << code << " (" << city << "): ";
+                                cout << flightManager.getNumberOfReachableCountries(code) << endl;
+                            }
+                            else if(response == 2) {
+                                cout << "Number of flights: ";
+                                cin >> numberOfFlights;
+                                cout << "Number of reachable countries from " << code << " (" << city << "): ";
+                                cout << flightManager.multipleFlightsReachableCountries(code, numberOfFlights) << endl;
+                            }
                             break;
                         case 6:
                             pickNumFlights();
