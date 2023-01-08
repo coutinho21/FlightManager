@@ -249,7 +249,7 @@ void Graph::oneAirlineBestTravel(Airport *origin, Airport *destination, const st
     Airport *w = airlineBestTravel(origin, destination, airlineCode);
     if(w == nullptr) {
         cout << "There is no flight from " << origin->getName() << " - " << origin->getCode() << " to "
-             << destination->getName() << " - " << destination->getCode() << " using only" << airlineCode << endl;
+             << destination->getName() << " - " << destination->getCode() << " using only " << airlineCode << endl;
         return;
     }
     else{

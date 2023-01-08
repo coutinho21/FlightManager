@@ -176,6 +176,7 @@ int main() {
                             break;
                     }
                 }
+                break;
             case 3:
                 cout << "=========================" << endl;
                 cout << "||                     ||" << endl;
@@ -183,10 +184,10 @@ int main() {
                 cout << "||                     ||" << endl;
                 cout << "=========================" << endl;
                 cout << "\n";
-                cout << "Select Origin Airport:" << endl;
+                cout << "Select Origin Airport: ";
                 getline(cin >> ws, src);
                 for (int i = 0; i < src.size(); i++) src[i] = toupper(src[i]);
-                cout << "Select Destination Airport:" << endl;
+                cout << "Select Destination Airport: ";
                 getline(cin >> ws, dest);
                 for (int i = 0; i < dest.size(); i++) dest[i] = toupper(dest[i]);
                 pickAirline();
@@ -194,21 +195,21 @@ int main() {
                 cout << "\n";
                 switch(type){
                     case 1:
-                        cout << "Select Airline:" << endl;
+                        cout << "Select Airline: ";
                         getline(cin >> ws, code);
                         for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
                         flightManager.oneAirlineBestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest], code);
                         break;
                     case 2:
-                        cout << "How many airlines would you like to use?:" << endl;
+                        cout << "How many airlines would you like to use? ";
                         cin >> response;
                         cout << "\n";
-                        cout << "Select First Airline:" << endl;
+                        cout << "Select First Airline: ";
                         getline(cin >> ws, code);
                         for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
                         airlineCodes.push_back(code);
                         for(int i = 1; i < response; i++){
-                            cout << "Select Another Airline:" << endl;
+                            cout << "Select Another Airline: ";
                             getline(cin >> ws, code);
                             for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
                             airlineCodes.push_back(code);
