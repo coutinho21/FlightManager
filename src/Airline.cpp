@@ -39,7 +39,7 @@ string Airline::getCountry() const {
     return this->country;
 }
 
-bool Airline::operator<(const Airline& a1) const {
+bool Airline::operator<(const Airline &a1) const {
     return this->code < a1.getCode();
 }
 

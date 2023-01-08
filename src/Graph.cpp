@@ -3,7 +3,10 @@
 #include <fstream>
 #include <sstream>
 
-
+/**
+ * Function that reads the info from the csv files
+ * Time complexity: O(n), n - length of csv file
+ */
 void Graph::readFiles(const string &file1, const string &file2, const string &file3) {
     std::fstream in1, in2, in3;
     std::string token;
@@ -27,12 +30,10 @@ void Graph::readFiles(const string &file1, const string &file2, const string &fi
         std::string tempstr;
         currentAirport = new Airport();
 
-
         while ((std::getline(iss, tempstr, ','))) {
             if (!tempstr.empty() && tempstr[tempstr.size() - 1] == '\r')
                 tempstr.erase(tempstr.size() - 1);
             temp.push_back(tempstr);
-
         }
 
         currentAirport->setCode(temp[0]);
@@ -95,11 +96,11 @@ unordered_map<string, Airport *> Graph::getAirports() {
     return airports;
 }
 
-unordered_map<string, Airline *> Graph::getAirlines() {
-    return airlines;
-}
-
-
+/**
+ * Function that calculates the distance between two airports in km
+ * It is used for the bfs search between airports
+ * Time complexity: O(1)
+ */
 double Graph::calculateDistance(Airport *a1, Airport *a2) {
     double lat1 = a1->getLatitude();
     double lat2 = a2->getLatitude();
@@ -120,8 +121,11 @@ double Graph::calculateDistance(Airport *a1, Airport *a2) {
     return earthRadius * c / 1000; // in km
 }
 
-
-Airport* Graph::bestTravel(Airport *origin, Airport *destination) {
+/**
+ * Function that implements the BFS algorithm to search the destination airport
+ * Time complexity: O(|V| + |E|), |V| - number of vertices in the graph (airports), |E| - number of edges in the graph (flights)
+ */
+Airport *Graph::bestTravel(Airport *origin, Airport *destination) {
     for (auto it: airports) it.second->setVisited(false);
     for (auto it: airports) it.second->setScales({});
     queue<Airport *> q; // queue of unvisited nodes
@@ -133,8 +137,8 @@ Airport* Graph::bestTravel(Airport *origin, Airport *destination) {
         q.pop();
         for (auto e: u->getFlights()) {
             Airport *w = e.getDestination();
-            vector<pair<Airport*, Airline*>> current;
-            pair<Airport*, Airline*> curr;
+            vector<pair<Airport *, Airline *>> current;
+            pair<Airport *, Airline *> curr;
             if (!w->isVisited()) {
                 q.push(w);
                 w->setVisited(true);
@@ -155,46 +159,29 @@ Airport* Graph::bestTravel(Airport *origin, Airport *destination) {
     return empty;
 }
 
-Airport* Graph::airlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode) {
-    for (auto it: airports) it.second->setVisited(false);
-    for (auto it: airports) it.second->setScales({});
-    queue<Airport *> q; // queue of unvisited nodes
-    q.push(origin);
-    origin->setVisited(true);
-    origin->setDistance(0);
-    while (!q.empty()) { // while there are still unvisited nodes
-        Airport *u = q.front();
-        q.pop();
-        for (auto e: u->getFlights()) {
-            // Check if the current flight uses the specified airline
-            if (e.getAirline()->getCode() != airlineCode) {
-                continue;
-            }
-
-            Airport *w = e.getDestination();
-            vector<pair<Airport*, Airline*>> current;
-            pair<Airport*, Airline*> curr;
-            if (!w->isVisited()) {
-                q.push(w);
-                w->setVisited(true);
-                double dist = calculateDistance(w, u);
-                w->setDistance(u->getDistance() + dist);
-                for (auto scale: u->getScales())
-                    current.push_back(scale);
-                curr.first = u;
-                curr.second = e.getAirline();
-                current.push_back(curr);
-                w->setScales(current);
-            }
-            if (w == destination)
-                return w;
-        }
-    }
-    Airport *empty{};
-    return empty;
+/**
+ * Function that calls the bestTravel function and searches the destination airport
+ * Prints best flight
+ * Time complexity: O(|V| + |E|), |V| - number of vertices in the graph (airports), |E| - number of edges in the graph (flights)
+ */
+void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
+    Airport *w = bestTravel(origin, destination);
+    cout << "Flight from " << origin->getName() << " - " << origin->getCode() << " to "
+         << destination->getName() << " - " << destination->getCode() << endl;
+    cout << "Number of flights: " << w->getScales().size() << endl;
+    cout << "Path: ";
+    for (auto scale: w->getScales())
+        cout << scale.first->getName() << " - " << scale.first->getCode() <<
+             " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
+    cout << destination->getName() << " - " << destination->getCode() << endl;
 }
 
-void Graph::bestTravelCity(const string& origin, const string& destination) {
+/**
+ * Function that calls the bestTravel function and searches the destination city
+ * Prints the best flight options
+ * Time complexity: O(n^2)
+ */
+void Graph::bestTravelCity(const string &origin, const string &destination) {
     vector<Airport *> originA;
     vector<Airport *> destinationA;
     int min = INT_MAX;
@@ -204,7 +191,7 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
     vector<Airport *> res;
 
 
-    for (const auto& airport: airports) {
+    for (const auto &airport: airports) {
         if (airport.second->getCity() == origin)
             originA.push_back(airport.second);
 
@@ -221,8 +208,7 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
                 resOrigin.push_back(pOrigin);
                 resDestination.push_back(pDestination);
                 min = check->getScales().size();
-            }
-            else if (check->getScales().size() == min) {
+            } else if (check->getScales().size() == min) {
                 resOrigin.push_back(pOrigin);
                 resDestination.push_back(pDestination);
             }
@@ -243,26 +229,12 @@ void Graph::bestTravelCity(const string& origin, const string& destination) {
     }
 }
 
-void Graph::oneAirlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode) {
-    Airport *w = airlineBestTravel(origin, destination, airlineCode);
-    if(w == nullptr) {
-        cout << "There is no flight from " << origin->getName() << " - " << origin->getCode() << " to "
-             << destination->getName() << " - " << destination->getCode() << " using only " << airlineCode << endl;
-        return;
-    }
-    else{
-        cout << "Flight from " << origin->getName() <<  " - " <<  origin->getCode() << " to "
-             << destination->getName() << " - " <<  destination->getCode() << endl;
-        cout << "Number of flights: " << w->getScales().size() << endl;
-        cout << "Path: ";
-        for(auto scale : w->getScales())
-            cout << scale.first->getName() << " - " << scale.first->getCode() <<
-                 " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
-        cout << destination->getName() << " - " << destination->getCode() << endl;
-    }
-}
 
-Airport* Graph::multipleAirlineBestTravel(Airport *origin, Airport *destination, const vector<string> &airlineCodes) {
+/**
+ * Function that implements the BFS algorithm to search the destination airport using just one airline
+ * Time complexity: O(|V| + |E|), |V| - number of vertices in the graph (airports), |E| - number of edges in the graph (flights)
+ */
+Airport *Graph::airlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode) {
     for (auto it: airports) it.second->setVisited(false);
     for (auto it: airports) it.second->setScales({});
     queue<Airport *> q; // queue of unvisited nodes
@@ -273,14 +245,14 @@ Airport* Graph::multipleAirlineBestTravel(Airport *origin, Airport *destination,
         Airport *u = q.front();
         q.pop();
         for (auto e: u->getFlights()) {
-            // Check if the current flight uses one of the specified airlines
-            if (find(airlineCodes.begin(), airlineCodes.end(), e.getAirline()->getCode()) == airlineCodes.end()) {
+            // Check if the current flight uses the specified airline
+            if (e.getAirline()->getCode() != airlineCode) {
                 continue;
             }
 
             Airport *w = e.getDestination();
-            vector<pair<Airport*, Airline*>> current;
-            pair<Airport*, Airline*> curr;
+            vector<pair<Airport *, Airline *>> current;
+            pair<Airport *, Airline *> curr;
             if (!w->isVisited()) {
                 q.push(w);
                 w->setVisited(true);
@@ -301,73 +273,133 @@ Airport* Graph::multipleAirlineBestTravel(Airport *origin, Airport *destination,
     return empty;
 }
 
-void Graph::multipleAirlinesPrint(Airport *origin, Airport *destination, const vector<string> &airlineCodes) {
-    Airport *w = multipleAirlineBestTravel(origin, destination, airlineCodes);
-    if(w == nullptr) {
+
+/**
+ * Function that gives the user the best flight using just one airline
+ * Time complexity: O(n)
+ */
+void Graph::oneAirlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode) {
+    Airport *w = airlineBestTravel(origin, destination, airlineCode);
+    if (w == nullptr) {
         cout << "There is no flight from " << origin->getName() << " - " << origin->getCode() << " to "
-             << destination->getName() << " - " << destination->getCode() << " using only the specified airlines" << endl;
+             << destination->getName() << " - " << destination->getCode() << " using only " << airlineCode << endl;
         return;
-    }
-    else{
-        cout << "Flight from " << origin->getName() <<  " - " <<  origin->getCode() << " to "
-             << destination->getName() << " - " <<  destination->getCode() << endl;
+    } else {
+        cout << "Flight from " << origin->getName() << " - " << origin->getCode() << " to "
+             << destination->getName() << " - " << destination->getCode() << endl;
         cout << "Number of flights: " << w->getScales().size() << endl;
         cout << "Path: ";
-        for(auto scale : w->getScales())
+        for (auto scale: w->getScales())
             cout << scale.first->getName() << " - " << scale.first->getCode() <<
                  " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
         cout << destination->getName() << " - " << destination->getCode() << endl;
     }
 }
 
+/**
+ * Function that gives the user the best flight using just multiple airlines by his choice, uses BFS
+ * Time complexity: O(|V| + |E|), |V| - number of vertices in the graph (airports), |E| - number of edges in the graph (flights)
+ */
+Airport *Graph::multipleAirlineBestTravel(Airport *origin, Airport *destination, const vector<string> &airlineCodes) {
+    for (auto it: airports) it.second->setVisited(false);
+    for (auto it: airports) it.second->setScales({});
+    queue<Airport *> q; // queue of unvisited nodes
+    q.push(origin);
+    origin->setVisited(true);
+    origin->setDistance(0);
+    while (!q.empty()) { // while there are still unvisited nodes
+        Airport *u = q.front();
+        q.pop();
+        for (auto e: u->getFlights()) {
+            // Check if the current flight uses one of the specified airlines
+            if (find(airlineCodes.begin(), airlineCodes.end(), e.getAirline()->getCode()) == airlineCodes.end()) {
+                continue;
+            }
 
-void Graph::bestTravelAirport(Airport *origin, Airport *destination) {
-    Airport *w = bestTravel(origin, destination);
-    cout << "Flight from " << origin->getName() <<  " - " <<  origin->getCode() << " to "
-    << destination->getName() << " - " <<  destination->getCode() << endl;
-    cout << "Number of flights: " << w->getScales().size() << endl;
-    cout << "Path: ";
-    for(auto scale : w->getScales())
-        cout << scale.first->getName() << " - " << scale.first->getCode() <<
-            " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
-    cout << destination->getName() << " - " << destination->getCode() << endl;
+            Airport *w = e.getDestination();
+            vector<pair<Airport *, Airline *>> current;
+            pair<Airport *, Airline *> curr;
+            if (!w->isVisited()) {
+                q.push(w);
+                w->setVisited(true);
+                double dist = calculateDistance(w, u);
+                w->setDistance(u->getDistance() + dist);
+                for (auto scale: u->getScales())
+                    current.push_back(scale);
+                curr.first = u;
+                curr.second = e.getAirline();
+                current.push_back(curr);
+                w->setScales(current);
+            }
+            if (w == destination)
+                return w;
+        }
+    }
+    Airport *empty{};
+    return empty;
 }
 
-int Graph::getNumberOfFlightsForAirport(const string &airportCode) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
-        return -1;
+/**
+ * Function that prints the flight using multiple airlines from function multipleAirlineBestTravel
+ * Time complexity: O(n)
+ */
+void Graph::multipleAirlinesPrint(Airport *origin, Airport *destination, const vector<string> &airlineCodes) {
+    Airport *w = multipleAirlineBestTravel(origin, destination, airlineCodes);
+    if (w == nullptr) {
+        cout << "There is no flight from " << origin->getName() << " - " << origin->getCode() << " to "
+             << destination->getName() << " - " << destination->getCode() << " using only the specified airlines"
+             << endl;
+        return;
+    } else {
+        cout << "Flight from " << origin->getName() << " - " << origin->getCode() << " to "
+             << destination->getName() << " - " << destination->getCode() << endl;
+        cout << "Number of flights: " << w->getScales().size() << endl;
+        cout << "Path: ";
+        for (auto scale: w->getScales())
+            cout << scale.first->getName() << " - " << scale.first->getCode() <<
+                 " --(flying with " << scale.second->getName() << " - " << scale.second->getCode() << ")--> ";
+        cout << destination->getName() << " - " << destination->getCode() << endl;
     }
-    Airport *airport = airports[airportCode];
+}
 
-    //return the number of flights from the airport;
+/**
+ * Function that returns the number of flights that depart from the specified airport
+ * Time complexity: O(1)
+ */
+int Graph::getNumberOfFlightsForAirport(const string &airportCode) {
+    if (airports.find(airportCode) == airports.end())
+        return -1;
+
+    Airport *airport = airports[airportCode];
     return airport->getFlights().size();
 }
 
+/**
+ * Function that lists the flights that depart from the specified airport
+ * Time complexity: O(n)
+ */
 void Graph::listFlights(const string &airportCode) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
+    if (airports.find(airportCode) == airports.end())
         return;
-    }
-    Airport *airport = airports[airportCode];
 
-    //list all the flights from the airport
-    for (auto flight : airport->getFlights()) {
-        cout << flight.getAirline()->getName() << "(" << flight.getAirline()->getCode() << ") - " << airportCode << " -> "
-             << flight.getDestination()->getCode() << " (" << flight.getDestination()->getCity() << ") "<< endl;
-    }
+    Airport *airport = airports[airportCode];
+    for (auto flight: airport->getFlights())
+        cout << flight.getAirline()->getName() << "(" << flight.getAirline()->getCode() << ") - " << airportCode
+             << " -> "
+             << flight.getDestination()->getCode() << " (" << flight.getDestination()->getCity() << ") " << endl;
 }
 
+/**
+ * Function that returns the number of airlines that have planes that depart from the specified airport
+ * Time complexity: O(n)
+ */
 int Graph::getNumberOfAirlinesAirport(const string &airportCode) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
+    if (airports.find(airportCode) == airports.end())
         return -1;
-    }
-    list<Airline*> airlines;
-    Airport *airport = airports[airportCode];
 
-    // Iterate over all the flights from this airport
-    for (auto flight : airport->getFlights()) {
+    list<Airline *> airlines;
+    Airport *airport = airports[airportCode];
+    for (auto flight: airport->getFlights()) {
         Airline *airline = flight.getAirline();
         airlines.push_back(airline);
     }
@@ -376,20 +408,20 @@ int Graph::getNumberOfAirlinesAirport(const string &airportCode) {
     airlines.sort();
     airlines.unique();
 
-    // Return the number of airlines
     return airlines.size();
 }
 
+/**
+ * Function that lists the airlines that have planes that depart from the specified airport
+ * Time complexity: O(n)
+ */
 void Graph::listAirlines(const string &airportCode) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
+    if (airports.find(airportCode) == airports.end())
         return;
-    }
-    list<Airline*> airlines;
-    Airport *airport = airports[airportCode];
 
-    // Iterate over all the flights from this airport
-    for (auto flight : airport->getFlights()) {
+    list<Airline *> airlines;
+    Airport *airport = airports[airportCode];
+    for (auto flight: airport->getFlights()) {
         Airline *airline = flight.getAirline();
         airlines.push_back(airline);
     }
@@ -398,19 +430,21 @@ void Graph::listAirlines(const string &airportCode) {
     airlines.sort();
     airlines.unique();
 
-    for(auto airline : airlines)
+    for (auto airline: airlines)
         cout << airline->getName() << " - " << airline->getCode() << endl;
 }
 
+/**
+ * Function that returns the number of the reachable cities from the specified airport using just one flight
+ * Time complexity: O(n)
+ */
 int Graph::getNumberOfReachableCities(const string &airportCode) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
+    if (airports.find(airportCode) == airports.end())
         return -1;
-    }
+
     list<string> reachableCities;
     Airport *currentAirport = airports[airportCode];
-
-    for (auto flight : currentAirport->getFlights()) {
+    for (auto flight: currentAirport->getFlights()) {
         Airport *destination = flight.getDestination();
         reachableCities.push_back(destination->getCity());
     }
@@ -420,29 +454,34 @@ int Graph::getNumberOfReachableCities(const string &airportCode) {
     return reachableCities.size();
 }
 
-
+/**
+ * Function that returns the number of the reachable countries from the specified airport using just one flight
+ * Time complexity: O(n)
+ */
 int Graph::getNumberOfReachableCountries(const string &airportCode) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
+    if (airports.find(airportCode) == airports.end())
         return -1;
-    }
+
     list<string> reachableCountries;
     Airport *airport = airports[airportCode];
-    for(auto &flight: airport->getFlights()){
+    for (auto &flight: airport->getFlights())
         reachableCountries.push_back(flight.getDestination()->getCountry());
-    }
+
     reachableCountries.sort();
     reachableCountries.unique();
     return reachableCountries.size();
 }
 
+/**
+ * Function that returns the number of the reachable cities from the specified airport using multiple flights
+ * Time complexity: O(n^2)
+ */
 int Graph::multipleFlightsReachableCities(const string &airportCode, int numFlights) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
+    if (airports.find(airportCode) == airports.end())
         return -1;
-    }
+
     list<string> reachableCities;
-    queue<Airport*> airportsToVisit;
+    queue<Airport *> airportsToVisit;
     airportsToVisit.push(airports[airportCode]);
 
     int flightsTaken = 0;
@@ -450,19 +489,14 @@ int Graph::multipleFlightsReachableCities(const string &airportCode, int numFlig
         Airport *currentAirport = airportsToVisit.front();
         airportsToVisit.pop();
 
-        // If the city for the current airport is not in the list
         if (find(reachableCities.begin(), reachableCities.end(), currentAirport->getCity()) == reachableCities.end()) {
-            // Add the city for the current airport to the list
             reachableCities.push_back(currentAirport->getCity());
 
-            // If the number of flights taken so far is less than the number of flights to search for
             if (flightsTaken < numFlights) {
-                // Add all the destination airports for the current airport to the queue
-                for (auto flight : currentAirport->getFlights()) {
+                for (auto flight: currentAirport->getFlights()) {
                     Airport *destination = flight.getDestination();
                     airportsToVisit.push(destination);
                 }
-                // Increment the number of flights taken by 1
                 flightsTaken++;
             }
         }
@@ -470,41 +504,35 @@ int Graph::multipleFlightsReachableCities(const string &airportCode, int numFlig
     reachableCities.sort();
     reachableCities.unique();
 
-    // Return the size of the list (which is the number of reachable cities)
     return reachableCities.size();
 }
 
+/**
+ * Function that returns the number of the reachable countries from the specified airport using multiple flights
+ * Time complexity: O(n^2)
+ */
 int Graph::multipleFlightsReachableCountries(const string &airportCode, int numFlights) {
-    if (airports.find(airportCode) == airports.end()) {
-        // Airport does not exist
+    if (airports.find(airportCode) == airports.end())
         return -1;
-    }
+
     list<string> reachableCountries;
-    queue<Airport*> airportsToVisit;
+    queue<Airport *> airportsToVisit;
     airportsToVisit.push(airports[airportCode]);
 
-    // Initialize the number of flights taken so far to 0
     int flightsTaken = 0;
-
-    // While there are airports in the queue
     while (!airportsToVisit.empty()) {
-        // Get the next airport from the queue
         Airport *currentAirport = airportsToVisit.front();
         airportsToVisit.pop();
 
-        // If the country for the current airport is not in the list
-        if (find(reachableCountries.begin(), reachableCountries.end(), currentAirport->getCountry()) == reachableCountries.end()) {
-            // Add the country for the current airport to the list
+        if (find(reachableCountries.begin(), reachableCountries.end(), currentAirport->getCountry()) ==
+            reachableCountries.end()) {
             reachableCountries.push_back(currentAirport->getCountry());
 
-            // If the number of flights taken so far is less than the number of flights to search for
             if (flightsTaken < numFlights) {
-                // Add all the destination airports for the current airport to the queue
-                for (auto flight : currentAirport->getFlights()) {
+                for (auto flight: currentAirport->getFlights()) {
                     Airport *destination = flight.getDestination();
                     airportsToVisit.push(destination);
                 }
-                // Increment the number of flights taken by 1
                 flightsTaken++;
             }
         }
@@ -512,7 +540,6 @@ int Graph::multipleFlightsReachableCountries(const string &airportCode, int numF
     reachableCountries.sort();
     reachableCountries.unique();
 
-    // Return the size of the list (which is the number of reachable countries)
     return reachableCountries.size();
 }
 

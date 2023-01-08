@@ -10,15 +10,19 @@ using namespace std;
 
 class Flight;
 
+/**
+ * Class that represents the airports (a node in the graph)
+ */
 class Airport {
     string code, name, city, country;
     double latitude{}, longitude{}, distance{};
-    vector<pair<Airport*, Airline*>> scales{};
-    bool visited = false;
-    vector<Flight> flights;
+    vector<pair<Airport *, Airline *>> scales{};
+    bool visited = false;   // node is visited?
+    vector<Flight> flights; // edges
 public:
 
     Airport() = default;
+
     Airport(string code, string name, string city, string country, double latitude, double longitude, bool visited);
 
     const string &getCode() const;
@@ -47,7 +51,7 @@ public:
 
     void setLongitude(double longitude);
 
-    void addFlight(Airport* destination, Airline* airline);
+    void addFlight(Airport *destination, Airline *airline);
 
     bool isVisited() const;
 
@@ -57,9 +61,9 @@ public:
 
     void setDistance(double distance);
 
-    vector<pair<Airport*, Airline*>> getScales() const;
+    vector<pair<Airport *, Airline *>> getScales() const;
 
-    void setScales(vector<pair<Airport*, Airline*>> scales);
+    void setScales(vector<pair<Airport *, Airline *>> scales);
 
     void setFlights(const vector<Flight> &flights);
 
