@@ -37,6 +37,10 @@ public:
     void oneAirlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode);
     Airport *multipleAirlineBestTravel(Airport *origin, Airport *destination, const vector<string> &airlineCodes);
     void multipleAirlinesPrint(Airport *origin, Airport *destination, const vector<string> &airlineCodes);
+
+    int multipleFlightsReachableCities(const string &airportCode, int numFlights);
+
+    int multipleFlightsReachableCountries(const string &airportCode, int numFlights);
 };
 
 

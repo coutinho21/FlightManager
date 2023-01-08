@@ -8,44 +8,53 @@ Graph flightManager;
 
 void showMenu() {
     cout << "\n";
-    cout << "---------------------- Menu ----------------------" << endl;
-    cout << "| 1- Best flight possible                        |" << endl;
-    cout << "| 2- Airport info                                |" << endl;
-    cout << "| 3- Book a flight                               |" << endl;
-    cout << "| 0- Quit                                        |" << endl;
-    cout << "--------------------------------------------------" << endl;
+    cout << "---------------------- Menu -----------------------" << endl;
+    cout << "| 1- Best flight possible                         |" << endl;
+    cout << "| 2- Airport info                                 |" << endl;
+    cout << "| 3- Book a flight                                |" << endl;
+    cout << "| 0- Quit                                         |" << endl;
+    cout << "---------------------------------------------------" << endl;
     cout << "Pick an option: ";
 }
 
 void showBestFlightMenu() {
     cout << "\n";
-    cout << "----------------------------------------------------" << endl;
-    cout << "| 1- Search by airport                             |" << endl;
-    cout << "| 2- Search by city                                |" << endl;
-    cout << "----------------------------------------------------" << endl;
+    cout << "---------------------------------------------------" << endl;
+    cout << "| 1- Search by airport                            |" << endl;
+    cout << "| 2- Search by city                               |" << endl;
+    cout << "---------------------------------------------------" << endl;
     cout << "Pick an option: ";
 }
 
 void showAirportInfoMenu() {
     cout << "\n";
-    cout << "---------------------- Menu ----------------------" << endl;
-    cout << "| 1- List of Flights                             |" << endl;
-    cout << "| 2- Number of Flights                           |" << endl;
-    cout << "| 3- List of Airlines                            |" << endl;
-    cout << "| 4- Number of Airlines                          |" << endl;
-    cout << "| 5- Number of Reachable countries               |" << endl;
-    cout << "| 6- Number of Reachable cities                  |" << endl;
-    cout << "| 0- Go back to menu                             |" << endl;
-    cout << "--------------------------------------------------" << endl;
+    cout << "---------------------- Menu -----------------------" << endl;
+    cout << "| 1- List of Flights                              |" << endl;
+    cout << "| 2- Number of Flights                            |" << endl;
+    cout << "| 3- List of Airlines                             |" << endl;
+    cout << "| 4- Number of Airlines                           |" << endl;
+    cout << "| 5- Number of Reachable countries                |" << endl;
+    cout << "| 6- Number of Reachable cities                   |" << endl;
+    cout << "| 0- Go back to menu                              |" << endl;
+    cout << "---------------------------------------------------" << endl;
     cout << "Pick an option: ";
 }
 
 void pickAirline() {
     cout << "\n";
-    cout << "-------------------------------------------------" << endl;
-    cout << "| 1- Fly using one airline                      |" << endl;
-    cout << "| 2- Fly using several airlines                 |" << endl;
-    cout << "-------------------------------------------------" << endl;
+    cout << "---------------------------------------------------" << endl;
+    cout << "| 1- Fly using one airline                        |" << endl;
+    cout << "| 2- Fly using several airlines                   |" << endl;
+    cout << "---------------------------------------------------" << endl;
+    cout << "Pick an option: ";
+}
+
+void pickNumFlights() {
+    cout << "\n";
+    cout << "---------------------------------------------------" << endl;
+    cout << "| 1- Find within one flight                       |" << endl;
+    cout << "| 2- Find within multiple flights                 |" << endl;
+    cout << "---------------------------------------------------" << endl;
     cout << "Pick an option: ";
 }
 
@@ -155,18 +164,38 @@ int main() {
                                 cout << "Number of airlines: " << numberOfAirlines << endl;
                             break;
                         case 5:
-                            numberOfCountries = flightManager.getNumberOfReachableCountries(code);
-                            if (numberOfCountries == -1)
-                                cout << "Airport not found!" << endl;
-                            else
-                                cout << "Number of reachable countries: " << numberOfCountries << endl;
+                            pickNumFlights();
+                            cin >> response;
+                            if(response == 1) {
+                                cout << "Number of reachable countries from " << code << " (" << city << "): ";
+                                cout << flightManager.getNumberOfReachableCountries(code) << endl;
+                            }
+                            else if(response == 2) {
+                                cout << "Number of flights: ";
+                                cin >> numberOfFlights;
+                                cout << "Number of reachable countries from " << code << " (" << city << "): ";
+                                cout << flightManager.multipleFlightsReachableCountries(code, numberOfFlights) << endl;
+                            }
                             break;
                         case 6:
-                            numberOfCities = flightManager.getNumberOfReachableCities(code);
-                            if (numberOfCities == -1)
-                                cout << "Airport not found!" << endl;
-                            else
-                                cout << "Number of reachable cities: " << numberOfCities << endl;
+                            pickNumFlights();
+                            cin >> response;
+                            if(response == 1){
+                                numberOfCities = flightManager.getNumberOfReachableCities(code);
+                                if (numberOfCities == -1)
+                                    cout << "Airport not found!" << endl;
+                                else
+                                    cout << "Number of reachable cities: " << numberOfCities << endl;
+                            }
+                            else if(response == 2){
+                                cout << "Number of flights: ";
+                                cin >> numberOfFlights;
+                                numberOfCities = flightManager.multipleFlightsReachableCities(code, numberOfFlights);
+                                if (numberOfCities == -1)
+                                    cout << "Airport not found!" << endl;
+                                else
+                                    cout << "Number of reachable cities: " << numberOfCities << endl;
+                            }
                             break;
                         case 0:
                             type = -1;
