@@ -438,6 +438,44 @@ int Graph::getNumberOfReachableCountries(const string &airportCode) {
     return reachableCountries.size();
 }
 
+int Graph::multipleFlightsReachableCities(const string &airportCode, int numFlights) {
+    if (airports.find(airportCode) == airports.end()) {
+        // Airport does not exist
+        return -1;
+    }
+    list<string> reachableCities;
+    queue<Airport*> airportsToVisit;
+    airportsToVisit.push(airports[airportCode]);
+
+    int flightsTaken = 0;
+    while (!airportsToVisit.empty()) {
+        Airport *currentAirport = airportsToVisit.front();
+        airportsToVisit.pop();
+
+        // If the city for the current airport is not in the list
+        if (find(reachableCities.begin(), reachableCities.end(), currentAirport->getCity()) == reachableCities.end()) {
+            // Add the city for the current airport to the list
+            reachableCities.push_back(currentAirport->getCity());
+
+            // If the number of flights taken so far is less than the number of flights to search for
+            if (flightsTaken < numFlights) {
+                // Add all the destination airports for the current airport to the queue
+                for (auto flight : currentAirport->getFlights()) {
+                    Airport *destination = flight.getDestination();
+                    airportsToVisit.push(destination);
+                }
+                // Increment the number of flights taken by 1
+                flightsTaken++;
+            }
+        }
+    }
+    reachableCities.sort();
+    reachableCities.unique();
+
+    // Return the size of the list (which is the number of reachable cities)
+    return reachableCities.size();
+}
+
 
 
 
