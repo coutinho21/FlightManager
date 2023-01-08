@@ -40,6 +40,15 @@ void showAirportInfoMenu() {
     cout << "Pick an option: ";
 }
 
+void pickAirline() {
+    cout << "\n";
+    cout << "-------------------------------------------------" << endl;
+    cout << "| 1- Fly using one airline                      |" << endl;
+    cout << "| 2- Fly using several airlines                 |" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "Pick an option: ";
+}
+
 void test() {
 
     auto airports = flightManager.getAirports();
@@ -85,7 +94,8 @@ int main() {
     flightManager.readFiles("airports.csv", "airlines.csv", "flights.csv");
     short entry = 0, type = 0;
     string src, dest, code, city;
-    int numberOfFlights, numberOfAirlines, numberOfCities, numberOfCountries;
+    int numberOfFlights, numberOfAirlines, numberOfCities, numberOfCountries, response;
+    vector<string> airlineCodes;
 
     while (entry != -1) {
         showMenu();
@@ -167,6 +177,44 @@ int main() {
                     }
                 }
             case 3:
+                cout << "=========================" << endl;
+                cout << "||                     ||" << endl;
+                cout << "||  Book your flight!  ||" << endl;
+                cout << "||                     ||" << endl;
+                cout << "=========================" << endl;
+                cout << "\n";
+                cout << "Select Origin Airport:" << endl;
+                getline(cin >> ws, src);
+                for (int i = 0; i < src.size(); i++) src[i] = toupper(src[i]);
+                cout << "Select Destination Airport:" << endl;
+                getline(cin >> ws, dest);
+                for (int i = 0; i < dest.size(); i++) dest[i] = toupper(dest[i]);
+                pickAirline();
+                cin >> type;
+                cout << "\n";
+                switch(type){
+                    case 1:
+                        cout << "Select Airline:" << endl;
+                        getline(cin >> ws, code);
+                        for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
+                        flightManager.oneAirlineBestTravel(flightManager.getAirports()[src], flightManager.getAirports()[dest], code);
+                        break;
+                    case 2:
+                        cout << "How many airlines would you like to use?:" << endl;
+                        cin >> response;
+                        cout << "\n";
+                        cout << "Select First Airline:" << endl;
+                        getline(cin >> ws, code);
+                        for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
+                        airlineCodes.push_back(code);
+                        for(int i = 1; i < response; i++){
+                            cout << "Select Another Airline:" << endl;
+                            getline(cin >> ws, code);
+                            for (int i = 0; i < code.size(); i++) code[i] = toupper(code[i]);
+                            airlineCodes.push_back(code);
+                        }
+                        flightManager.multipleAirlinesPrint(flightManager.getAirports()[src], flightManager.getAirports()[dest], airlineCodes);
+                }
                 break;
             case 0:
                 entry = -1;

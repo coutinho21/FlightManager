@@ -31,10 +31,12 @@ public:
     int getNumberOfAirlinesAirport(const string &airportCode);
     void listAirlines(const string &airportCode);
     void listFlights(const string &airportCode);
-
     int getNumberOfReachableCities(const string &airportCode);
-
     int getNumberOfReachableCountries(const string &airportCode);
+    Airport *airlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode);
+    void oneAirlineBestTravel(Airport *origin, Airport *destination, const string &airlineCode);
+    Airport *multipleAirlineBestTravel(Airport *origin, Airport *destination, const vector<string> &airlineCodes);
+    void multipleAirlinesPrint(Airport *origin, Airport *destination, const vector<string> &airlineCodes);
 };
 
 
