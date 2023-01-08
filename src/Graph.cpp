@@ -122,7 +122,6 @@ double Graph::calculateDistance(Airport *a1, Airport *a2) {
 
 
 Airport* Graph::bestTravel(Airport *origin, Airport *destination) {
-
     for (auto it: airports) it.second->setVisited(false);
     for (auto it: airports) it.second->setScales({});
     queue<Airport *> q; // queue of unvisited nodes
@@ -194,7 +193,6 @@ Airport* Graph::airlineBestTravel(Airport *origin, Airport *destination, const s
     Airport *empty{};
     return empty;
 }
-
 
 void Graph::bestTravelCity(const string& origin, const string& destination) {
     vector<Airport *> originA;
